@@ -20,6 +20,34 @@ alias s="subl ."
 alias o="open"
 alias oo="open ."
 
+#* Apple unique workstation UUID.
+UUID=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/perl -ne 'if (m/^.*\"IOPlatformUUID\" = \"(.*).*\"$/im) {print $1}')
+alias uuid="echo $UUID"
+
+#* Serial number.
+SERIAL=$(/usr/sbin/ioreg -c IOPlatformExpertDevice | /usr/bin/sed -E -n -e '/IOPlatformSerialNumber/{s/^.*[[:space:]]"IOPlatformSerialNumber" = "(.+)"$/\1/p;q;}')
+alias serial="echo $SERIAL"
+
+#* Mac address.
+MACADDRESS=$(/usr/sbin/networksetup -getMACADDRESS en0 | /usr/bin/awk '{print $3}' | /usr/bin/sed s/://g)
+alias macaddress="echo $MACADDRESS"
+
+# Model.
+MODEL=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -E model | /usr/bin/awk '{print $3}' | /usr/bin/sed 's/\<\"//' | sed 's/\"\>//')
+alias model="echo $MODEL"
+
+#* OS
+OS=`/usr/bin/sw_vers | grep ProductVersion | awk '{print $2}'`
+alias os="echo $OS"
+
+#* RAM
+RAM=`/usr/sbin/system_profiler SPHardwareDataType | grep "Memory" | awk '{print $2$3}'`
+alias ram="echo $RAM"
+
+#* CPU
+CPU=`/usr/sbin/system_profiler SPHardwareDataType | grep "Processor Name" | awk '{print $3$4$5$6$7$8$9}'`
+alias cpu="echo $CPU"
+
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
@@ -55,7 +83,8 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ifconfig | sed 's/broadcast.*//g' | egrep -o '([0-9]{1,3}\.){3}[0-9]{1,3}'"
-alias nic="netstat -rn | grep default | head -1 | awk '{print $6}'"
+alias nic="netstat -rn | grep default | head -1 | awk '{print \$6}'"
+alias mac="/usr/sbin/networksetup -getMACADDRESS `nic`"
 alias ips="ifconfig -a | grep -o 'inet6\? \(\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\)\|[a-fA-F0-9:]\+\)' | sed -e 's/inet6* //'"
 
 # Enhanced WHOIS lookups

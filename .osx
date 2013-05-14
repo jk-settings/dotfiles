@@ -18,6 +18,10 @@ sudo scutil --set HostName "min-mac-air"
 sudo scutil --set LocalHostName "min-mac-air"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "min-mac-air"
 
+#* Turn down default volume
+#+ NOTE : So the "boot" phase doesn't surprise anyone :)
+sudo /usr/bin/osascript -e "set Volume 2"
+
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400
 
