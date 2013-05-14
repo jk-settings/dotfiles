@@ -25,7 +25,16 @@ set directory=~/.vim/swaps
 if exists("&undodir")
 	set undodir=~/.vim/undo
 endif
-
+" Formatting
+set autoindent
+set expandtab
+set smarttab
+set nojoinspaces
+set shiftround
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+nnoremap J mzJ`z
 " Respect modeline in files
 set modeline
 set modelines=4
