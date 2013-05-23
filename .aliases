@@ -20,6 +20,7 @@ alias s="subl ."
 alias o="open"
 alias oo="open ."
 alias sshi="ssh -i .ssh/id_rsa.oldmacair"
+alias nr="netstat -nr"
 
 #* Apple unique workstation UUID.
 UUID=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/perl -ne 'if (m/^.*\"IOPlatformUUID\" = \"(.*).*\"$/im) {print $1}')
