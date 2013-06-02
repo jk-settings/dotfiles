@@ -12,6 +12,7 @@ xmodmap -e 'remove Mod2 = Meta_L' -e 'add Mod1 = Meta_L'
 xmodmap -e 'remove Mod2 = Meta_R' -e 'add Mod1 = Meta_R'
 #xmodmap -e 'keysym Alt_L = Meta_L Alt_L'
 #xmodmap -e 'keysym Alt_R = Meta_R Alt_R'
+xset r rate 100 25
 
 exec dwm
 
