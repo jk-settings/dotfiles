@@ -10,6 +10,8 @@ brew install dwm
 brew install dmenu
 brew install wget
 brew install dnsmasq
+brew install gtk+
+brew install qt
 
 # Install GNU core utilities (those that come with OS X are outdated)
 #brew install coreutils
