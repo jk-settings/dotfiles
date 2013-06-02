@@ -11,7 +11,7 @@ brew install dmenu
 brew install wget
 brew install dnsmasq
 brew install --with-x11 links
-#brew install gtk+
+brew install gtk+3
 #brew install --with-qtdbus qt
 
 # Install GNU core utilities (those that come with OS X are outdated)
