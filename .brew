@@ -6,7 +6,7 @@ brew update
 # Upgrade any already-installed formulae
 brew upgrade
 
-brew install dwm
+#brew install dwm
 brew install dmenu
 brew install wget
 brew install dnsmasq
