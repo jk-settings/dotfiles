@@ -1,13 +1,4 @@
 # File : .Xdefaults
-xterm*font:  -*-fixed-medium-r-*-*-13-*-*-*-*-*-*-*
-xterm*font1: -*-fixed-medium-r-*-*-18-*-*-*-*-*-iso8859-*
-xterm*font2: -*-*-*-*-*-*-2-*-*-*-*-*-*-*
-xterm*font3: -misc-fixed-*-r-normal-*-8-*-*-*-*-*-iso8859-*
-xterm*font4: -b&h-lucidatypewriter-bold-*-*-*-12-*-*-*-*-*-*-*
-xterm*font5: -*-screen-bold-r-normal-*-16-*-*-*-*-*-iso8859-*
-xterm*font6: -*-lucidatypewriter-medium-*-*-*-18-*-*-*-*-*-*-*
-xterm*font7: -*-lucidatypewriter-medium-*-*-*-20-*-*-*-*-*-*-*
-xterm*font8: -dec-terminal-bold-r-normal-*-14-*-*-*-*-*-iso8859-*
 
 XTerm*background: black
 XTerm*foreground: white
