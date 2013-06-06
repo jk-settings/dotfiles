@@ -3,45 +3,50 @@
 # Screenshot: http://i.imgur.com/s0Blh.png
 
 if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
-	export TERM=gnome-256color
+  export TERM=gnome-256color
 elif infocmp xterm-256color >/dev/null 2>&1; then
-	export TERM=xterm-256color
+  export TERM=xterm-256color
 fi
 
 if tput setaf 1 &> /dev/null; then
-	tput sgr0
-	if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-		MAGENTA=$(tput setaf 9)
-		ORANGE=$(tput setaf 172)
-		GREEN=$(tput setaf 190)
-		PURPLE=$(tput setaf 141)
-		WHITE=$(tput setaf 0)
-	else
-		MAGENTA=$(tput setaf 5)
-		ORANGE=$(tput setaf 4)
-		GREEN=$(tput setaf 2)
-		PURPLE=$(tput setaf 1)
-		WHITE=$(tput setaf 7)
-	fi
-	BOLD=$(tput bold)
-	RESET=$(tput sgr0)
+  tput sgr0
+#  if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+#  else
+    BLACK=$(tput setaf 0)
+    RED=$(tput setaf 1)
+    GREEN=$(tput setaf 2)
+    YELLOW=$(tput setaf 3)
+    BLUE=$(tput setaf 4)
+    PURPLE=$(tput setaf 5)
+    CYAN=$(tput setaf 6)
+    WHITE=$(tput setaf 7)
+#  fi
+  BOLD=$(tput bold)
+  RESET=$(tput sgr0)
+	ROOT=$(tput setab 1)$(tput setaf 0)
 else
-	MAGENTA="\033[1;31m"
-	ORANGE="\033[1;33m"
-	GREEN="\033[1;32m"
-	PURPLE="\033[1;35m"
-	WHITE="\033[1;37m"
+	RED="\033[0;31m"
+	GREEN="\033[0;32m"
+	YELLOW="\033[0;33m"
+	BLUE="\033[0;34m"
+	PURPLE="\033[0;35m"
+	CYAN="\033[0;36m"
+	WHITE="\033[0;37m"
 	BOLD=""
 	RESET="\033[m"
+	ROOT="\033[30;41m"
 fi
 
-export MAGENTA
-export ORANGE
+export RED
 export GREEN
+export YELLOW
+export BLUE
 export PURPLE
+export CYAN
 export WHITE
 export BOLD
 export RESET
+export ROOT
 
 function parse_git_dirty() {
 	[[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "*"
@@ -51,5 +56,18 @@ function parse_git_branch() {
 	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
-export PS1="\[${BOLD}${WHITE}\]\D{%Y%m%d}\[${RESET}${WHITE}\]-\[${BOLD}${WHITE}\]\D{%H%M%S%z}\n\[$MAGENTA\]\u \[$WHITE\]at \[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$WHITE\]\n\$ \[$RESET\]"
-export PS2="\[$ORANGE\]→ \[$RESET\]"
+export PS1DATE="\[${PURPLE}\]\D{%Y%m%d %H%M%S %Z%z}"
+export PS1USER="\[${RED}\]\u"
+if [ "`whoami`" = "root" ]; then
+  export PS1USER="\[${ROOT}\]\u"
+fi
+export PS1HOST="\[${RESET}${YELLOW}\]\h"
+export PS1DIR="\[$GREEN\]\w"
+export PS1GIT="\[$CYAN\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" \")\$(parse_git_branch)"
+export PS1DEFAULT="\[$BLUE\]"
+export PS2DEFAULT="\[$YELLOW\]"
+
+export PS1="${PS1DATE}\n\n${PS1USER}@${PS1HOST} ${PS1DIR} ${PS1GIT}\n${PS1DEFAULT}→ \[$RESET\]"
+
+export PS2="${PS2DEFAULT}→ \[$RESET\]"
+
