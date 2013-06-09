@@ -8,6 +8,7 @@ alias -- -="cd -"
 
 # Shortcuts
 alias d="date '+%Y%m%dT%H%M%S%z'"
+alias dr="date '+%Y-%m-%d %H:%M:%S %Z%z'"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias p="cd ~/Projects"
@@ -23,33 +24,47 @@ alias sshi="ssh -i .ssh/id_rsa.oldmacair"
 alias nr="netstat -nr"
 alias lsof-i="lsof -i -n | awk '\$9 ~ /([0-9]{1,3}\.){3}[0-9]/ && !/127.0.0.1/ {\$4=\$5=\$6=\$7=\$8=\"\";print}' | column -t"
 
-#* Apple unique workstation UUID.
-UUID=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/perl -ne 'if (m/^.*\"IOPlatformUUID\" = \"(.*).*\"$/im) {print $1}')
-alias uuid="echo $UUID"
+if [ -e /usr/sbin/ioreg ]; then
+#  * Apple unique workstation UUID.
+  alias uuid='/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/perl -ne '\''if (m/^.*\"IOPlatformUUID\" = \"(.*).*\"$/im) {print $1 . "\n"}'\'''
 
-#* Serial number.
-SERIAL=$(/usr/sbin/ioreg -c IOPlatformExpertDevice | /usr/bin/sed -E -n -e '/IOPlatformSerialNumber/{s/^.*[[:space:]]"IOPlatformSerialNumber" = "(.+)"$/\1/p;q;}')
-alias serial="echo $SERIAL"
+#  * Serial number.
+  alias serial='/usr/sbin/ioreg -c IOPlatformExpertDevice | /usr/bin/sed -E -n -e '\''/IOPlatformSerialNumber/{s/^.*[[:space:]]"IOPlatformSerialNumber" = "(.+)"$/\1/p;q;}'\'''
+#  * Model.
+  alias model='/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -E model | /usr/bin/awk '\''{print $3}'\'' | /usr/bin/sed '\''s/\<\"//'\'' | sed '\''s/\"\>//'\'''
+fi
 
-#* Mac address.
-MACADDRESS=$(/usr/sbin/networksetup -getMACADDRESS en0 | /usr/bin/awk '{print $3}' | /usr/bin/sed s/://g)
-alias macaddress="echo $MACADDRESS"
+if [ -e /usr/sbin/networksetup ]; then
+#  * Mac address.
+  alias macaddress="/usr/sbin/networksetup -getMACADDRESS en0 | /usr/bin/awk '{print \$3}' | /usr/bin/sed s/://g"
+fi
 
-# Model.
-MODEL=$(/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -E model | /usr/bin/awk '{print $3}' | /usr/bin/sed 's/\<\"//' | sed 's/\"\>//')
-alias model="echo $MODEL"
+if [ -e /usr/bin/sw_vers ]; then
+#  * OS
+  alias os="/usr/bin/sw_vers | grep ProductVersion | awk '{print \$2}'"
+fi
 
-#* OS
-OS=`/usr/bin/sw_vers | grep ProductVersion | awk '{print $2}'`
-alias os="echo $OS"
+if [ -e /usr/sbin/system_profiler ]; then
+#  * RAM
+  alias ram="/usr/sbin/system_profiler SPHardwareDataType | grep 'Memory' | awk '{print \$2\$3}'"
 
-#* RAM
-RAM=`/usr/sbin/system_profiler SPHardwareDataType | grep "Memory" | awk '{print $2$3}'`
-alias ram="echo $RAM"
+#  * CPU
+  alias cpu="/usr/sbin/system_profiler SPHardwareDataType | grep 'Processor Name' | awk '{print \$3\$4\$5\$6\$7\$8\$9}'"
+fi
 
-#* CPU
-CPU=`/usr/sbin/system_profiler SPHardwareDataType | grep "Processor Name" | awk '{print $3$4$5$6$7$8$9}'`
-alias cpu="echo $CPU"
+case `uname -s` in
+  "Darwin")
+    alias ramtotal='ram|sed "s/GB//"'
+    alias ramfree='echo "scale=2;("`sysctl -n vm.page_free_count`"*"`sysctl -n hw.pagesize`")/1000/1000/1000"|bc'
+    alias ramused='echo "scale=2;("`ramtotal`"-"`ramfree`")"|bc'
+    alias statram='echo `ramtotal`"G "`ramused`"G "`ramfree`"G"'
+    alias statdisk="df -H /|grep '/'|awk '{print \$2,\$3,\$4}'"
+    alias statcpu="sysctl -n vm.loadavg|sed 's/[^[:alnum:] .]//g'"
+    ;;
+  "FreeBSD")
+    alias ramfree=''
+    ;;
+esac
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -88,7 +103,6 @@ alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ifconfig | sed 's/broadcast.*//g' | egrep -o '([0-9]{1,3}\.){3}[0-9]{1,3}'"
 alias nic="netstat -rn | grep default | head -1 | awk '{print \$6}'"
-alias mac="/usr/sbin/networksetup -getMACADDRESS `nic`"
 alias ips="ifconfig -a | grep -o 'inet6\? \(\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\)\|[a-fA-F0-9:]\+\)' | sed -e 's/inet6* //'"
 
 # Enhanced WHOIS lookups

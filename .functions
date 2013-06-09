@@ -242,3 +242,14 @@ function gi() {
 	local IFS=,
 	eval npm install --save-dev grunt-{"$*"}
 }
+
+# Convert d to dr
+function dcdr() {
+  date -j -f '%Y%m%dT%H%M%S%z' "$@" '+%Y-%m-%d %H:%M:%S %Z%z'
+}
+
+# Convert dr to d
+function drcd() {
+  date -j -f '%Y-%m-%d %H:%M:%S %Z%z' "$@" '+%Y%m%dT%H%M%S%z'
+}
+
