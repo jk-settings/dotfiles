@@ -56,7 +56,7 @@ function parse_git_branch() {
 	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
-export PS1DATE="\[${PURPLE}\]\D{%Y%m%d %H%M%S %Z%z}"
+export PS1DATE="\[${PURPLE}\]\D{%Y-%m-%d %H:%M:%S %Z%z}"
 export PS1USER="\[${RED}\]\u"
 if [ "`whoami`" = "root" ]; then
   export PS1USER="\[${ROOT}\]\u"
