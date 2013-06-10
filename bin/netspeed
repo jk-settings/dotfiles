@@ -68,11 +68,11 @@ sub allspeed {
   for my $nic ( @nics ) {
     my @data = diffdata( $nic ) ;
     if ( $data[ 0 ] ) {
-      printf  "%s %.3f %.3f M/s\n", $nic , ( $data[ 0 ] / 1024 / 1024 ) , ( $data[ 1 ] / 1024 / 1024 ) ;
+      printf  "%s %.3f %.3f M/s\n", $nic , ( $data[ 0 ] / 5 / 1024 / 1024 ) , ( $data[ 1 ] / 5 / 1024 / 1024 ) ;
     }
   }
 }
 
-for (;;sleep 1) {
+for (;;sleep 5) {
   allspeed() ;
 }
