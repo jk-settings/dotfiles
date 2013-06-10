@@ -9,6 +9,6 @@ export PATH=${PATH}:/usr/local/bin
 
 xset r rate 200 40
 
-exec dwmstatus &
+exec dwmsd &
 exec dwm
 
