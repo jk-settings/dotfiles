@@ -7,7 +7,7 @@ brew update
 brew upgrade
 
 #brew install dwm
-brew install dmenu
+#brew install dmenu
 brew install wget
 brew install dnsmasq
 brew install --with-x11 links
