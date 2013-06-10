@@ -1,0 +1,35 @@
+#!/bin/bash
+
+while true
+do
+
+dr=$(date '+%Y-%m-%d %H:%M:%S %Z%z')
+case `uname -s` in
+  "Darwin")
+    ramtotal=8
+    ramfree=$(echo "scale=1;("`sysctl -n vm.page_free_count`"*"`sysctl -n hw.pagesize`")/1000/1000/1000"|bc)
+    ramused=$(echo "$ramtotal $ramfree"|awk '{printf "%.1f\n", $1 - $2}')
+    statram="${ramtotal}G ${ramused}G ${ramfree}G"
+    statcpu=$(sysctl -n vm.loadavg|sed -e 's/[^[:alnum:] .]//g' -e 's/^ *//g' -e 's/ *$//g')
+    statdisk=$(df -H /|grep '/'|awk '{print $2,$3,$4}')
+    ;;
+  "FreeBSD")
+    pagesize=$(sysctl -n hw.pagesize)
+    # round total ram up
+    ramtotalpage=$(echo "("`sysctl -n vm.stats.vm.v_page_count`"*${pagesize})"|bc)
+    ramtotal=$(echo "scale=1;("`sysctl -n vm.stats.vm.v_page_count`"*${pagesize})/1024/1024/1024"|bc)
+    ramfreepage=$(echo "("`sysctl -n vm.stats.vm.v_free_count`"*${pagesize})"|bc)
+    ramfree=$(echo "scale=1;(${ramfreepage})/1024/1024/1024"|bc)
+    ramused=$(echo "$ramtotalpage $ramfreepage"|awk '{printf "%.1f\n", ( $1 - $2 ) / 1024 / 1024 / 1024 }')
+#    alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.2f\n", $1 - $2 }'\'''
+    statram="${ramtotal}G ${ramused}G ${ramfree}G"
+    statcpu=$(sysctl -n vm.loadavg|sed 's/[^[:alnum:] .]//g')
+    statdisk=$(zpool get size,allocated,free `df -H /|grep /|awk -F'/' '{print \$1}'`|tail -3|awk '{printf "%s ", $3}'|awk '{print $0}')
+    ;;
+esac
+
+echo "$statcpu ' $statram ' $statdisk ' $dr"|dwmsc
+sleep 2
+
+done > /dev/null 2>&1 &
+
