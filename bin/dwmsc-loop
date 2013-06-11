@@ -23,8 +23,8 @@ case `uname -s` in
     ramused=$(echo "$ramtotalpage $ramfreepage"|awk '{printf "%.1f\n", ( $1 - $2 ) / 1024 / 1024 / 1024 }')
 #    alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.2f\n", $1 - $2 }'\'''
     statram="${ramtotal}G ${ramused}G ${ramfree}G"
-    statcpu=$(sysctl -n vm.loadavg|sed 's/[^[:alnum:] .]//g')
-    statdisk=$(zpool get size,allocated,free `df -H /|grep /|awk -F'/' '{print \$1}'`|tail -3|awk '{printf "%s ", $3}'|awk '{print $0}')
+    statcpu=$(sysctl -n vm.loadavg|sed -e 's/[^[:alnum:] .]//g' -e 's/^ *//g' -e 's/ *$//g')
+    statdisk=$(zpool get size,allocated,free `df -H /|grep /|awk -F'/' '{print \$1}'`|tail -3|awk '{printf "%s ", $3}'|awk '{print $1,$2,$3}')
     ;;
 esac
 
