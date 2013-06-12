@@ -11,7 +11,7 @@ brew upgrade
 brew install dnsmasq
 brew install links --with-x11
 brew install gnutls
-brew install emacs --with-gnutls --with-x11
+brew install emacs --with-gnutls --with-x
 #brew tap homebrew/versions
 #brew install --with-qtdbus qt
 
