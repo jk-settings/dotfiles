@@ -8,9 +8,10 @@ brew upgrade
 
 #brew install dwm
 #brew install dmenu
-brew install wget
 brew install dnsmasq
-brew install --with-x11 links
+brew install links --with-x11
+brew install gnutls
+brew install emacs --with-gnutls --with-x11
 #brew tap homebrew/versions
 #brew install --with-qtdbus qt
 
@@ -23,7 +24,7 @@ brew install --with-x11 links
 #brew install bash
 
 # Install wget with IRI support
-#brew install wget --enable-iri
+brew install wget --enable-iri
 
 # Install RingoJS and Narwhal
 # Note that the order in which these are installed is important; see http://git.io/brew-narwhal-ringo.
