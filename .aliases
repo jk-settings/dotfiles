@@ -55,7 +55,7 @@ fi
 case `uname -s` in
   "Darwin")
     alias ramtotal='ram|sed "s/GB//"'
-    alias ramfree='echo "scale=1;("`sysctl -n vm.page_free_count`"*"`sysctl -n hw.pagesize`")/1000/1000/1000"|bc'
+    alias ramfree='echo `sysctl -n vm.page_free_count`" "`sysctl -n hw.pagesize`|awk '\''{printf "%.1f\n", $1 * $2 / 1000000000 }'\'''
     alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.1f\n", $1 - $2}'\'''
     alias statram='echo `ramtotal`"G "`ramused`"G "`ramfree`"G"'
     alias statcpu='sysctl -n vm.loadavg|sed -e '\''s/[^[:alnum:] .]//g'\'' -e '\''s/^ *//g'\'' -e '\''s/ *$//g'\'''
@@ -64,15 +64,20 @@ case `uname -s` in
   "FreeBSD")
     alias pagesize='sysctl -n hw.pagesize'
     # round total ram up
-    alias ramtotalpage='echo "("`sysctl -n vm.stats.vm.v_page_count`"*"`pagesize`")"|bc'
-    alias ramtotal='echo "scale=1;("`sysctl -n vm.stats.vm.v_page_count`"*"`pagesize`")/1024/1024/1024"|bc'
-    alias ramfreepage='echo "("`sysctl -n vm.stats.vm.v_free_count`"*"`pagesize`")"|bc'
-    alias ramfree='echo "scale=1;("`ramfreepage`")/1024/1024/1024"|bc'
-    alias ramused='echo `ramtotalpage`" "`ramfreepage`|awk '\''{printf "%.1f\n", ( $1 - $2 ) / 1024 / 1024 / 1024 }'\'''
+    alias ramtotalpage='echo `sysctl -n vm.stats.vm.v_page_count`" "`pagesize`|awk '\''{printf "%.1f\n", $1 * $2 }'\'''
+    alias ramtotal='echo `sysctl -n vm.stats.vm.v_page_count`" "`pagesize`|awk '\''{printf "%.1f\n", $1 * $2 / 1073741824 }'\'''
+    alias ramfreepage='echo `sysctl -n vm.stats.vm.v_free_count`" "`pagesize`|awk '\''{printf "%.1f\n", $1 * $2 }'\'''
+    alias ramfree='echo `ramfreepage`|awk '\''{printf "%.1f\n", $1 / 1073741824 }'\'''
+    alias ramused='echo `ramtotalpage`" "`ramfreepage`|awk '\''{printf "%.1f\n", ( $1 - $2 ) / 1073741824 }'\'''
 #    alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.2f\n", $1 - $2 }'\'''
     alias statram='echo `ramtotal`"G "`ramused`"G "`ramfree`"G"'
     alias statcpu='sysctl -n vm.loadavg|sed -e '\''s/[^[:alnum:] .]//g'\'' -e '\''s/^ *//g'\'' -e '\''s/ *$//g'\'''
     alias statdisk='zpool get size,allocated,free `df -H /|grep /|awk -F'\''/'\'' '\''{print \$1}'\''`|tail -3|awk '\''{printf "%s ", $3}'\''|awk '\''{print $0}'\'''
+    alias statwho='who -q|tail -r|tail +2|tr '\'' '\'' '\''\n'\''|sort -u|tr '\''\n'\'' '\'' '\''|sed '\''s/^ *//g'\'''
+    alias statusr='uptime|egrep -o "[0-9]+ users?"'
+    alias statup='uptime|egrep -o "up[^,]*"'
+    alias sshdf='ssh-keygen -lf /etc/ssh/ssh_host_rsa_key.pub | awk '\''{print $2}'\'''
+    alias statzfs='zpool status|egrep -v '\''(ONLINE|none requested|NAME *STATE|config\:|^$)'\''|sed -e '\''s/^ *pool\: //g'\'' -e '\''s/errors\://g'\''|tr -d '\''\n'\'''
     ;;
 esac
 
