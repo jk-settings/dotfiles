@@ -64,7 +64,7 @@ fi
 export PS1HOST="\[${RESET}${YELLOW}\]\h"
 export PS1DIR="\[$GREEN\]\w"
 export PS1GIT="\[$CYAN\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" \")\$(parse_git_branch)"
-export PS1DEFAULT="\[$BLUE\]"
+export PS1DEFAULT="\[$CYAN\]"
 export PS2DEFAULT="\[$YELLOW\]"
 
 export PS1="${PS1DATE}\n${PS1USER}@${PS1HOST} ${PS1DIR} ${PS1GIT}\n${PS1DEFAULT}→ \[$RESET\]"
