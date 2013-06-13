@@ -58,7 +58,7 @@ case `uname -s` in
     alias ramfree='echo "scale=1;("`sysctl -n vm.page_free_count`"*"`sysctl -n hw.pagesize`")/1000/1000/1000"|bc'
     alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.1f\n", $1 - $2}'\'''
     alias statram='echo `ramtotal`"G "`ramused`"G "`ramfree`"G"'
-    alias statcpu="sysctl -n vm.loadavg|sed -e 's/[^[:alnum:] .]//g' -e 's/^ *//g' -e 's/ *$//g'"
+    alias statcpu='sysctl -n vm.loadavg|sed -e '\''s/[^[:alnum:] .]//g'\'' -e '\''s/^ *//g'\'' -e '\''s/ *$//g'\'''
     alias statdisk="df -H /|grep '/'|awk '{print \$2,\$3,\$4}'"
     ;;
   "FreeBSD")
@@ -71,7 +71,7 @@ case `uname -s` in
     alias ramused='echo `ramtotalpage`" "`ramfreepage`|awk '\''{printf "%.1f\n", ( $1 - $2 ) / 1024 / 1024 / 1024 }'\'''
 #    alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.2f\n", $1 - $2 }'\'''
     alias statram='echo `ramtotal`"G "`ramused`"G "`ramfree`"G"'
-    alias statcpu="sysctl -n vm.loadavg|sed -e 's/[^[:alnum:] .]//g' -e 's/^ *//g' -e 's/ *$//g'"
+    alias statcpu='sysctl -n vm.loadavg|sed -e '\''s/[^[:alnum:] .]//g'\'' -e '\''s/^ *//g'\'' -e '\''s/ *$//g'\'''
     alias statdisk='zpool get size,allocated,free `df -H /|grep /|awk -F'\''/'\'' '\''{print \$1}'\''`|tail -3|awk '\''{printf "%s ", $3}'\''|awk '\''{print $0}'\'''
     ;;
 esac
