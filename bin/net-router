@@ -1,0 +1,7 @@
+#!/bin/sh
+
+netstat -nr | \
+  egrep default | \
+  awk '{ print $2 }' | \
+  sort -u
+

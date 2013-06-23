@@ -1,0 +1,7 @@
+#!/bin/sh
+
+ifconfig ${1} | \
+  sed 's/broadcast.*//g' | \
+  egrep -v "lladdr" | \
+  egrep -o "([0-9]{1,3}\.){3}[0-9]{1,3}"
+

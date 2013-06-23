@@ -1,0 +1,7 @@
+#!/bin/sh
+
+netstat -rn | \
+  egrep "default" | \
+  head -1 | \
+  awk '{print $6}'
+
