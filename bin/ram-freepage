@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case `uname -s` in
+  "Darwin")
+    echo $( sysctl -n vm.page_free_count )" "$( ram-pagesize ) | \
+      awk '{ printf "%.1f\n", $1 * $2 }'
+    ;;
+  "FreeBSD")
+    echo $( sysctl -n vm.stats.vm.v_free_count )" "$( ram-pagesize ) | \
+      awk '{ printf "%.1f\n", $1 * $2 }'
+    ;;
+esac
+

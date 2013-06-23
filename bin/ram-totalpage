@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case `uname -s` in
+  "Darwin")
+    exit 1
+    ;;
+  "FreeBSD")
+    # round total ram up
+    echo $( sysctl -n vm.stats.vm.v_page_count )" "$( ram-pagesize ) | \
+      awk '{ printf "%.1f\n", $1 * $2 }'
+    ;;
+esac
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "CPU  "`stat-cpu`
+echo "RAM  "`stat-ram`
+echo "UP   "`stat-up`
+echo "HDD  "`stat-disk`
+echo "USR  "`stat-usr`
+echo "WHO  "`stat-who`
+echo "ZFS  "`stat-zfs`
+

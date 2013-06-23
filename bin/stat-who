@@ -1,0 +1,10 @@
+#!/bin/sh
+
+who -q | \
+  tail -r | \
+  tail +2 | \
+  tr ' ' '\n' | \
+  sort -u | \
+  tr '\n' ' ' | \
+  sed 's/^ *//g'
+

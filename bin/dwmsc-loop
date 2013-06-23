@@ -2,41 +2,8 @@
 
 while true
 do
-
-dr=$(date '+%Y-%m-%d %H:%M:%S %Z%z')
-case `uname -s` in
-  "Darwin")
-    ram=$(/usr/sbin/system_profiler SPHardwareDataType | grep 'Memory' | awk '{print $2$3}')
-    ramtotal=$(echo $ram|sed "s/GB//")
-    ramfree=$(echo `sysctl -n vm.page_free_count`" "`sysctl -n hw.pagesize`|awk '{printf "%.1f\n", $1 * $2 / 1000000000 }')
-    ramused=$(echo "$ramtotal $ramfree"|awk '{printf "%.1f\n", $1 - $2}')
-    statram="${ramtotal}G ${ramused}G ${ramfree}G"
-    statcpu=$(sysctl -n vm.loadavg|sed -e 's/[^[:alnum:] .]//g' -e 's/^ *//g' -e 's/ *$//g')
-    statdisk=$(df -H /|grep '/'|awk '{print $2,$3,$4}')
-    ;;
-  "FreeBSD")
-    pagesize=$(sysctl -n hw.pagesize)
-    # round total ram up
-    ramtotalpage=$(echo `sysctl -n vm.stats.vm.v_page_count`" "`pagesize`|awk '{printf "%.1f\n", $1 * $2 }')
-    ramtotal=$(echo `sysctl -n vm.stats.vm.v_page_count`" "`pagesize`|awk '{printf "%.1f\n", $1 * $2 / 1073741824 }')
-    ramfreepage=$(echo `sysctl -n vm.stats.vm.v_free_count`" "`pagesize`|awk '{printf "%.1f\n", $1 * $2 }')
-    ramfree=$(echo "$ramfreepage"|awk '{printf "%.1f\n", $1 / 1073741824 }')
-    ramused=$(echo "${ramtotalpage} ${ramfreepage}"|awk '{printf "%.1f\n", ( $1 - $2 ) / 1073741824 }')
-#    alias ramused='echo `ramtotal`" "`ramfree`|awk '\''{printf "%.2f\n", $1 - $2 }'\'''
-    statram="${ramtotal}G ${ramused}G ${ramfree}G"
-    statcpu=$(sysctl -n vm.loadavg|sed -e 's/[^[:alnum:] .]//g' -e 's/^ *//g' -e 's/ *$//g')
-    statdisk=$(zpool get size,allocated,free `df -H /|grep /|awk -F'/' '{print \$1}'`|tail -3|awk '{printf "%s ", $3}'|awk '{print $0}')
-    statwho=$(who -q|tail -r|tail +2|tr ' ' '\n'|sort -u|tr '\n' ' '|sed 's/^ *//g')
-    statusr=$(uptime|egrep -o "[0-9]+ users?")
-    statup=$(uptime|egrep -o "up[^,]*")
-    sshdf=$(ssh-keygen -lf /etc/ssh/ssh_host_rsa_key.pub | awk '{print $2}')
-    statzfs=$(zpool status|egrep -v '(ONLINE|none requested|NAME *STATE|config\:|^$)'|sed -e 's/^ *pool\: //g' -e 's/errors\://g'|tr -d '\n')
-    ;;
-esac
-
-output="${statcpu} ' ${statram} ' ${statdisk} ' ${dr}"
-echo "$output"|dwmsc
-sleep 2
-
+  output="$( stat-cpu ) ' $( stat-ram ) ' $( stat-disk ) ' $( dr )"
+  echo "${output}" | /usr/local/bin/dwmsc
+  /bin/sleep 2
 done > /dev/null 2>&1 &
 

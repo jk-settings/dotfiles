@@ -2,7 +2,7 @@
 
 while true
 do
-  pgrep -lf dwmsd > /dev/null 2>&1 || dwmsd &
-  sleep 10
+  /usr/bin/pgrep -lf dwmsd > /dev/null 2>&1 || /usr/local/bin/dwmsd &
+  /bin/sleep 10
 done > /dev/null 2>&1 &
 

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+case `uname -s` in
+  "Darwin")
+    exit 1
+    ;;
+  "FreeBSD")
+    zpool status ${1} | \
+      egrep -v '(ONLINE|none requested|NAME *STATE|config\:|^$)' | \
+      sed -e 's/^ *pool\: //g' -e 's/errors\://g' | \
+      tr -d '\n'
+    ;;
+esac
+
