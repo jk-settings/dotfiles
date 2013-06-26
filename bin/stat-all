@@ -6,5 +6,9 @@ echo "UP   "`stat-up`
 echo "HDD  "`stat-disk`
 echo "USR  "`stat-usr`
 echo "WHO  "`stat-who`
-echo "ZFS  "`stat-zfs`
+ZFSLIST=`zpool status | egrep -o "pool\: ([[:alnum:]]*)" | awk '{ print $NF }'`
+for a in ${ZFSLIST} ; do
+  ZFS=`stat-zfs ${a}`
+  echo "ZFS  ${ZFS}"
+done
 

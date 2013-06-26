@@ -6,9 +6,9 @@ case `uname -s` in
     ;;
   "FreeBSD")
     zpool status ${1} | \
-      egrep -v '(ONLINE|none requested|NAME *STATE|config\:|^$)' | \
-      sed -e 's/^ *pool\: //g' -e 's/errors\://g' | \
-      tr -d '\n'
+      egrep '(pool\:|state\:|scan\:|errors\:)' | \
+      tr '\n' '`' | \
+      sed -e 's/ *pool\: / /g' -e 's/`/  /g' -e 's/   */  /g' -e 's/^ *//g'
     ;;
 esac
 
