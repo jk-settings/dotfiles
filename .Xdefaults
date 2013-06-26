@@ -13,12 +13,14 @@ XTerm*scrollBar: false
 XTerm*scrollKey: true
 XTerm*saveLines: 1000
 XTerm*multiClickTime: 250
-XTerm*visualBell: true
+#XTerm*visualBell: true
+XTerm*bellIsUrgent: true
 UXTerm*loginShell: false
 UXTerm*scrollBar: false
 UXTerm*scrollKey: true
 UXTerm*saveLines: 1000
 UXTerm*multiClickTime: 250
-UXTerm*visualBell: true
+#UXTerm*visualBell: true
+UXTerm*bellIsUrgent: true
 *VT100.translations: #override  Meta <KeyPress> V:  insert-selection(PRIMARY, CUT_BUFFER0) \n
 
