@@ -1,0 +1,82 @@
+#!/bin/sh
+
+netstatcmd=netstat
+routecmd='$netstatcmd -nr'
+ifconfigcmd=ifconfig
+ifconfigacmd='$ifconfigcmd -a'
+
+function dec_to_chr() {
+  dec=$@
+  ori=$dec
+  ##### diff = beyond last letter - first letter
+  ##### diff = 127 - 101
+  ##### diff = 26
+  diff=26
+  dec=$(( dec + 10 ))
+  while [ $dec -lt 101 ]; do
+    dec=$(( dec + diff ))
+  done
+  while [ $dec -gt 126 ]; do
+    dec=$(( dec - diff ))
+  done
+  if [ $dec -gt 107 ]; then
+    dec=$(( dec + 2 ))
+  fi
+  if [ $dec -gt 117 ]; then
+    dec=$(( dec + 2 ))
+  fi
+  if [ $dec -gt 127 ]; then
+    dec=$(( dec + 2 ))
+  fi
+  chr=`printf '%b' '\'$dec`
+#  echo $ori'  '$dec'  '$chr
+  printf '%s' $chr
+}
+
+function hex_to_chr() {
+  hex=$@
+  dec=`printf '%d' '0x'$@`
+  chr=`dec_to_chr $dec`
+  printf '%s' $chr
+}
+
+function defaultnicjname() {
+  name=''
+  nic=`netstat -rn | egrep "default" | head -1 | awk '{ print $NF }'`
+  if [ -n "$nic" ]; then
+    mac=`ifconfig ${nic} | egrep -o "([0-9a-f]{2}:){5}[0-9a-f]{2}" | tr -d ':' | sort -u`
+    if [ -n "$mac" ]; then
+      octets=`echo $mac | egrep -o '[[:alnum:]]{2}'`
+      for a in $octets; do
+        name="${name}`hex_to_chr ${a}`"
+      done
+    fi
+  fi
+  echo $name
+}
+
+function aliasnicjname() {
+  name=''
+  nics=`ifconfig | egrep "^[[:alpha:]]" | awk -F':' '{print $1}'`
+  for a in $nics; do
+    mac=`ifconfig ${a} | egrep -o "([0-9a-f]{2}:){5}[0-9a-f]{2}" | tr -d ':' | sort -u`
+    if [ -n "$mac" ]; then
+      octets=`echo $mac | egrep -o '[[:alnum:]]{2}'`
+      for b in $octets; do
+        name="${name}`hex_to_chr ${b}`"
+      done
+      name="${name}-"
+    fi
+  done
+  defnicjname=`defaultnicjname`
+  if [ -n "$defnicjname" ]; then
+    name=`echo $name | sed "s/${defnicjname}-//g"`
+    name="${defnicjname}-$name"
+  fi
+  name=`echo $name | sed 's/-$//g'`
+  echo $name
+}
+
+#defaultnicjname
+aliasnicjname
+
