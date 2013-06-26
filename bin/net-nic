@@ -3,5 +3,5 @@
 netstat -rn | \
   egrep "default" | \
   head -1 | \
-  awk '{print $6}'
+  awk '{ print $NF }'
 
