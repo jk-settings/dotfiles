@@ -12,6 +12,7 @@ function dec_to_chr() {
   ##### diff = 127 - 101
   ##### diff = 26
   diff=26
+  ##### plus 10 to match the perl version of jname
   dec=$(( dec + 10 ))
   while [ $dec -lt 101 ]; do
     dec=$(( dec + diff ))
@@ -40,9 +41,9 @@ function hex_to_chr() {
   printf '%s' $chr
 }
 
-function defaultnicjname() {
+function nicjname() {
   name=''
-  nic=`netstat -rn | egrep "default" | head -1 | awk '{ print $NF }'`
+  nic=$@
   if [ -n "$nic" ]; then
     mac=`ifconfig ${nic} | egrep -o "([0-9a-f]{2}:){5}[0-9a-f]{2}" | tr -d ':' | sort -u`
     if [ -n "$mac" ]; then
@@ -51,6 +52,15 @@ function defaultnicjname() {
         name="${name}`hex_to_chr ${a}`"
       done
     fi
+  fi
+  echo $name
+}
+
+function defaultnicjname() {
+  name=''
+  nic=`netstat -rn | egrep "default" | head -1 | awk '{ print $NF }'`
+  if [ -n "$nic" ]; then
+    name=`nicjname $nic`
   fi
   echo $name
 }
@@ -77,6 +87,13 @@ function aliasnicjname() {
   echo $name
 }
 
-#defaultnicjname
-aliasnicjname
+if [ -z "${1}" ]; then
+  aliasnicjname
+else
+  if [ "${1}" = "d" ]; then
+    defaultnicjname
+  else
+    nicjname ${1}
+  fi
+fi
 
