@@ -5,7 +5,7 @@ routecmd='$netstatcmd -nr'
 ifconfigcmd=ifconfig
 ifconfigacmd='$ifconfigcmd -a'
 
-function dec_to_chr() {
+dec_to_chr() {
   dec=$@
   ori=$dec
   ##### diff = beyond last letter - first letter
@@ -34,14 +34,14 @@ function dec_to_chr() {
   printf '%s' $chr
 }
 
-function hex_to_chr() {
+hex_to_chr() {
   hex=$@
   dec=`printf '%d' '0x'$@`
   chr=`dec_to_chr $dec`
   printf '%s' $chr
 }
 
-function nicjname() {
+nicjname() {
   name=''
   nic=$@
   if [ -n "$nic" ]; then
@@ -56,7 +56,7 @@ function nicjname() {
   echo $name
 }
 
-function defaultnicjname() {
+defaultnicjname() {
   name=''
   nic=`netstat -rn | egrep "default" | head -1 | awk '{ print $NF }'`
   if [ -n "$nic" ]; then
@@ -65,7 +65,7 @@ function defaultnicjname() {
   echo $name
 }
 
-function aliasnicjname() {
+aliasnicjname() {
   name=''
   nics=`ifconfig | egrep "^[[:alpha:]]" | awk -F':' '{print $1}'`
   for a in $nics; do
