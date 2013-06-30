@@ -1,14 +1,49 @@
 #!/bin/sh
 
-echo "CPU  "`stat-cpu`
-echo "RAM  "`stat-ram`
-echo "UP   "`stat-up`
-echo "HDD  "`stat-disk`
-echo "USR  "`stat-usr`
-echo "WHO  "`stat-who`
+echo "DATE `date-dr`"
+echo "HOST `hostname`"
+echo "UPT  `stat-up`"
+echo "CPU  `stat-cpu`"
+echo "RAM  `stat-ram`"
+echo "HDD  `stat-disk`"
+echo "USR  `stat-usr`"
+echo "WHO  `stat-who`"
+
+count=0
 ZFSLIST=`zpool status | egrep -o "pool\: ([[:alnum:]]*)" | awk '{ print $NF }'`
 for a in ${ZFSLIST} ; do
-  ZFS=`stat-zfs ${a}`
-  echo "ZFS  ${ZFS}"
+  count=$(( count + 1 ))
+  if [ $count -eq 1 ]; then
+    echo -n "ZFS  "
+  else
+    echo -n "     "
+  fi
+  echo "`stat-zfs $a`"
+done
+
+echo "SSH  `sshd-finger`"
+count=0
+NICLIST=`ifconfig | egrep "^[[:alpha:]]" | awk -F':' '{print $1}'`
+for a in ${NICLIST} ; do
+  if [ "$a" != "lo0" -a "$a" != "fwe0" -a "$a" != "fwip0" -a "$a" != "ipfw0" ]; then
+    count=$(( count + 1 ))
+    if [ $count -eq 1 ]; then
+      echo -n "NET  "
+    else
+      echo -n "     "
+    fi
+    echo "$a   `net-mac $a`   `net-ip $a`"
+  fi
+done
+
+count=0
+net-connections | while read line; do
+  count=$(( count + 1 ))
+  if [ $count -eq 1 ]; then
+    echo -n "CON  "
+  else
+    echo -n "     "
+  fi
+  echo "$line"
 done
 
