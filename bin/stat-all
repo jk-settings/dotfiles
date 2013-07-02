@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "DATE `date-dr`"
 echo "HOST `hostname`"
@@ -21,11 +21,13 @@ for a in ${ZFSLIST} ; do
   echo "`stat-zfs $a`"
 done
 
-echo "SSH  `sshd-finger`"
+if which sshd-finger >/dev/null 2>&1; then
+  echo "SSH  `sshd-finger`"
+fi
 count=0
 NICLIST=`ifconfig | egrep "^[[:alpha:]]" | awk -F':' '{print $1}'`
 for a in ${NICLIST} ; do
-  if [ "$a" != "lo0" -a "$a" != "fwe0" -a "$a" != "fwip0" -a "$a" != "ipfw0" ]; then
+  if [ "$a" != "lo0" -a "$a" != "stf0" -a "$a" != "gif0" -a "$a" != "pflog0" -a "$a" != "fwe0" -a "$a" != "fwip0" -a "$a" != "ipfw0" ]; then
     count=$(( count + 1 ))
     if [ $count -eq 1 ]; then
       echo -n "NET  "
