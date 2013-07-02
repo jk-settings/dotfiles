@@ -9,5 +9,6 @@ ifconfig ${1} | \
   egrep -v "lladdr" | \
   egrep -o "([0-9]{1,3}\.){3}[0-9]{1,3}" | \
   tr '\n' '~' | \
-  sed 's/~/   /g'
+  sed 's/~/   /g' | \
+  sed 's/ *$//g'
 
