@@ -2,7 +2,7 @@
 
 while true
 do
-  output="$( stat-cpu ) ' $( stat-ram ) ' $( stat-disk ) ' $( dr )"
+  output="$( stat-cpu ) ' $( stat-ram ) ' $( stat-disk ) ' $( date-dr )"
   echo "${output}" | /usr/local/bin/dwmsc
   /bin/sleep 2
 done > /dev/null 2>&1 &

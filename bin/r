@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if which rsync >/dev/null 2>&1 ; then
+  rsync=$( which rsync )
+else
+  echo "Command rsync not found"
+  exit 1
+fi
+
+$rsync -virthmLP --exclude ".DS_Store" $@
+
