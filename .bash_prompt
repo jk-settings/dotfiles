@@ -12,29 +12,29 @@ if tput setaf 1 &> /dev/null; then
   tput sgr0
 #  if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
 #  else
-    BLACK=$(tput setaf 0)
-    RED=$(tput setaf 1)
-    GREEN=$(tput setaf 2)
-    YELLOW=$(tput setaf 3)
-    BLUE=$(tput setaf 4)
-    PURPLE=$(tput setaf 5)
-    CYAN=$(tput setaf 6)
-    WHITE=$(tput setaf 7)
+  BLACK=$(tput setaf 0)
+  RED=$(tput setaf 1)
+  GREEN=$(tput setaf 2)
+  YELLOW=$(tput setaf 3)
+  BLUE=$(tput setaf 4)
+  PURPLE=$(tput setaf 5)
+  CYAN=$(tput setaf 6)
+  WHITE=$(tput setaf 7)
 #  fi
   BOLD=$(tput bold)
   RESET=$(tput sgr0)
-	ROOT=$(tput setab 1)$(tput setaf 0)
+  ROOT=$(tput setab 1)$(tput setaf 7)
 else
-	RED="\033[0;31m"
-	GREEN="\033[0;32m"
-	YELLOW="\033[0;33m"
-	BLUE="\033[0;34m"
-	PURPLE="\033[0;35m"
-	CYAN="\033[0;36m"
-	WHITE="\033[0;37m"
-	BOLD=""
-	RESET="\033[m"
-	ROOT="\033[30;41m"
+  RED="\033[0;31m"
+  GREEN="\033[0;32m"
+  YELLOW="\033[0;33m"
+  BLUE="\033[0;34m"
+  PURPLE="\033[0;35m"
+  CYAN="\033[0;36m"
+  WHITE="\033[0;37m"
+  BOLD=""
+  RESET="\033[m"
+  ROOT="\033[30;41m"
 fi
 
 export RED
@@ -57,17 +57,21 @@ function parse_git_branch() {
 }
 
 export PS1DATE="\[${PURPLE}\]\D{%Y-%m-%d %H:%M:%S %Z%z}"
-export PS1USER="\[${RED}\]\u"
+export PS1USER="\[${GREEN}\]\u"
 if [ "`whoami`" = "root" ]; then
   export PS1USER="\[${ROOT}\]\u"
 fi
-export PS1HOST="\[${RESET}${YELLOW}\]\h"
-export PS1DIR="\[$GREEN\]\w"
-export PS1GIT="\[$CYAN\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" \")\$(parse_git_branch)"
-export PS1DEFAULT="\[$CYAN\]"
+export PS1HOST="\[${RESET}${CYAN}\] \h"
+export PS1DIR="\[$YELLOW\]\w"
+export PS1GIT="\[$PURPLE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" \")\$(parse_git_branch)"
+export PS1DEFAULT="\[$PURPLE\]"
 export PS2DEFAULT="\[$YELLOW\]"
+export PS1SIGN="%"
+if [ "`whoami`" = "root" ]; then
+  export PS1SIGN="#"
+fi
 
-export PS1="${PS1DATE}\n${PS1USER}@${PS1HOST} ${PS1DIR} ${PS1GIT}\n${PS1DEFAULT}→ \[$RESET\]"
+export PS1="${PS1DATE}\n${PS1USER}${PS1HOST} ${PS1DIR} ${PS1GIT}\n${PS1DEFAULT}${PS1SIGN} \[$RESET\]"
 
-export PS2="${PS2DEFAULT}→ \[$RESET\]"
+export PS2="${PS2DEFAULT}? \[$RESET\]"
 
