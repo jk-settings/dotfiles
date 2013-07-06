@@ -17,7 +17,7 @@ export LESS_TERMCAP_md="$ORANGE"
 
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -erX"
-export GIT_PAGER="less"
+export GIT_PAGER="less -erX"
 export LESS="-erX"
 
 # Always enable colored `grep` output
