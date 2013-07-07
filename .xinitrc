@@ -10,6 +10,7 @@ export PATH=${PATH}:/usr/local/bin
 xset b off
 
 xset r rate 200 40
+xrdb -merge ~/.Xdefaults
 
 exec dwmsd &
 exec dwm
