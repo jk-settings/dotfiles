@@ -480,7 +480,7 @@ defaults write com.apple.terminal "Startup Window Settings" -string "Ocean"
 #defaults write org.x.X11 wm_ffm -bool true
 
 # run uxterm on XQuartz run
-defaults write org.macosforge.xquartz.X11 app_to_run uxterm
+defaults write org.macosforge.xquartz.X11 app_to_run urxvt
 
 ###############################################################################
 # Time Machine                                                                #
