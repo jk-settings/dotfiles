@@ -1,11 +1,11 @@
-##### .xinitrc for dwm on XQuartz for Mac
+##### .xinitrc for dwm
 
 cd ~
 
 exec >>~/.xsession-errors 2>&1
 
-export MANPATH=${MANPATH}:/usr/local/share/man
-export PATH=${PATH}:/usr/local/bin
+export MANPATH=/usr/share/man:/usr/local/share/man:${MANPATH}
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:${PATH}
 
 xset b off
 
