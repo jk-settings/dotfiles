@@ -67,7 +67,7 @@ defaultnicjname() {
 
 aliasnicjname() {
   name=''
-  nics=`ifconfig | egrep "^[[:alpha:]]" | awk -F':' '{print $1}'`
+  nics=`ifconfig -l`
   for a in $nics; do
     mac=`ifconfig ${a} | egrep -o "([0-9a-f]{2}:){5}[0-9a-f]{2}" | tr -d ':' | sort -u`
     if [ -n "$mac" ]; then
