@@ -18,7 +18,8 @@ alias m="mate ."
 alias s="subl ."
 alias o="open"
 alias oo="open ."
-alias sshi="ssh -i .ssh/id_rsa.oldmacair"
+alias sshi="ssh -i ~/.ssh/id_rsa.oldmacair"
+alias sshm="ssh -i ~/.ssh/id_rsa.minair"
 alias nr="netstat -nr"
 
 if [ -e /usr/sbin/ioreg ]; then
