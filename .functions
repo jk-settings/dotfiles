@@ -69,6 +69,8 @@ if [ $? -eq 0 ]; then
   function diff() { # Use Git’s colored diff when available
     if [ -z "${1}" ]; then
       git diff --ignore-space-change
+    elif [ -z "${2}" ]; then
+      git diff --ignore-space-change "$@"
     else
       git diff --no-index --ignore-space-change "$@"
     fi
