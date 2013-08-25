@@ -7,5 +7,11 @@ else
   exit 1
 fi
 
-$rsync -virthmLP --exclude ".DS_Store" $@
+$rsync -virhmLP --exclude ".DS_Store" $@
+# -L follows links to actual file
+# -t for time
+# -c for checksum
+# -o for owner
+# -g for group
+# -p for permission
 
