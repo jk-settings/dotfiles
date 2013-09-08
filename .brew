@@ -91,3 +91,5 @@ function installcask() {
 
 # Remove outdated versions from the cellar
 brew cleanup
+ln -s gpg2 /usr/local/bin/gpg
+
