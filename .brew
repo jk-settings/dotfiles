@@ -17,6 +17,9 @@ brew install urxvt --disable-iso14755
 brew install gnupg2
 #brew tap homebrew/versions
 #brew install --with-qtdbus qt
+brew tap josegonzalez/php
+brew tap homebrew/dupes
+brew install josegonzalez/php/php55
 
 # Install GNU core utilities (those that come with OS X are outdated)
 #brew install coreutils
