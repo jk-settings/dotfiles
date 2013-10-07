@@ -1,0 +1,4 @@
+#!/bin/bash
+
+osascript -e 'tell application "iTunes" to set rating of current track to 100'
+
