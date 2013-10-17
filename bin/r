@@ -7,7 +7,7 @@ else
   exit 1
 fi
 
-$rsync -virhmLP --exclude ".DS_Store" $@
+$rsync -virhmLP --exclude ".DS_Store" "$@"
 # -L follows links to actual file
 # -t for time
 # -c for checksum
