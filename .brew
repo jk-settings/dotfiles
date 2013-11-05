@@ -15,6 +15,7 @@ brew install emacs --with-gnutls --with-x
 brew install feh
 brew install urxvt --disable-iso14755
 brew install gnupg2
+brew install ghostscript
 #brew tap homebrew/versions
 #brew install --with-qtdbus qt
 brew tap josegonzalez/php
