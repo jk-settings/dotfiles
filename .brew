@@ -21,6 +21,8 @@ brew install ghostscript
 brew tap josegonzalez/php
 brew tap homebrew/dupes
 brew install josegonzalez/php/php55
+brew install flac
+brew install bchunk
 
 # Install GNU core utilities (those that come with OS X are outdated)
 #brew install coreutils
