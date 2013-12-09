@@ -7,8 +7,10 @@ else
   exit 1
 fi
 
-$rsync -virhLP --exclude ".DS_Store" "$@"
+$rsync -virhP --exclude ".DS_Store" "$@"
 # -L follows links to actual file
+# -H keep hardlinks
+# -l keel symlinks
 # -m for skipping empty folders
 # -t for time
 # -c for checksum
