@@ -7,7 +7,7 @@ else
   exit 1
 fi
 
-$rsync -virhP --exclude ".DS_Store" --exclude .localized "$@"
+$rsync -virhP --exclude ".DS_Store" --exclude .localized --exclude Thumbs.db "$@"
 # -L follows links to actual file
 # -H keep hardlinks
 # -l keel symlinks
