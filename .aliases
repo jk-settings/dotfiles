@@ -21,6 +21,7 @@ alias oo="open ."
 alias sshi="ssh -i ~/.ssh/id_rsa.oldmacair"
 alias sshm="ssh -i ~/.ssh/id_rsa.minair"
 alias nr="netstat -nr"
+alias tw="open -a TextWrangler.app"
 
 if [ -e /usr/sbin/ioreg ]; then
 #  * Apple unique workstation UUID.
