@@ -24,6 +24,17 @@ alias sshm="ssh -i ~/.ssh/id_rsa.minair"
 alias nr="netstat -nr"
 alias tw="open -a TextWrangler.app"
 
+# SSH Network
+alias q140="ssh 192.168.255.140"
+alias q141="ssh 192.168.255.141"
+alias q142="ssh 192.168.255.142"
+alias q150="ssh 192.168.255.150"
+alias q151="ssh 192.168.255.151"
+alias q152="ssh 192.168.255.152"
+alias q162="ssh 192.168.255.162"
+alias q163="ssh 192.168.255.163"
+alias q172="ssh 192.168.255.172"
+
 if [ -e /usr/sbin/ioreg ]; then
 #  * Apple unique workstation UUID.
   alias uuid='/usr/sbin/ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/perl -ne '\''if (m/^.*\"IOPlatformUUID\" = \"(.*).*\"$/im) {print $1 . "\n"}'\'''
