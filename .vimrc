@@ -1,6 +1,7 @@
 " Solarized darkbg
 set background=dark
-colorscheme solarized
+" colorscheme solarized
+colorscheme railscat
 call togglebg#map("<F5>")
 " Make Vim more useful
 set nocompatible
