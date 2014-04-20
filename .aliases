@@ -34,6 +34,11 @@ alias q152="ssh root@192.168.255.152"
 alias q162="ssh root@192.168.255.162"
 alias q163="ssh root@192.168.255.163"
 alias q172="ssh root@192.168.255.172"
+alias q3="ssh ko@192.168.0.3"
+alias q5="ssh root@192.168.0.5"
+alias q5="ssh root@192.168.0.8"
+alias q11="ssh ko@192.168.0.11"
+alias q13="ssh ko@192.168.0.13"
 
 alias r140="ssh-keygen -R 192.168.255.140"
 alias r141="ssh-keygen -R 192.168.255.141"
@@ -44,6 +49,11 @@ alias r152="ssh-keygen -R 192.168.255.152"
 alias r162="ssh-keygen -R 192.168.255.162"
 alias r163="ssh-keygen -R 192.168.255.163"
 alias r172="ssh-keygen -R 192.168.255.172"
+alias r3="ssh-keygen -R 192.168.0.3"
+alias r5="ssh-keygen -R 192.168.0.5"
+alias r5="ssh-keygen -R 192.168.0.8"
+alias r11="ssh-keygen -R 192.168.0.11"
+alias r13="ssh-keygen -R 192.168.0.13"
 
 
 if [ -e /usr/sbin/ioreg ]; then
@@ -123,8 +133,8 @@ alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
 # View HTTP traffic
-alias sniff="sudo ngrep -d '`nic`' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i `nic` -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias sniff="sudo ngrep -d '`net-nic`' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i `net-nic` -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
