@@ -24,6 +24,9 @@ alias sshm="ssh -i ~/.ssh/id_rsa.minair"
 alias nr="netstat -nr"
 alias tw="open -a TextWrangler.app"
 
+# VPN Route
+alias rvpn="su admin -c 'sudo route add 192.168.0.0 172.16.64.1'"
+
 # SSH Network
 alias q140="ssh root@192.168.255.140"
 alias q141="ssh root@192.168.255.141"
