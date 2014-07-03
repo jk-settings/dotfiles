@@ -230,3 +230,11 @@ function gi() { # Install Grunt plugins and add them as `devDependencies` to `pa
 	eval npm install --save-dev grunt-{"$*"}
 }
 
+function sssh() { # ssh, until status code 0
+	while true; do
+		/usr/bin/ssh $*
+		RESULT="$?"
+		[ "$RESULT" = "0" ] && break || echo "Error, ssh exit status code: $RESULT"
+		/bin/sleep 2
+	done
+}
