@@ -234,7 +234,7 @@ function sssh() { # ssh, until status code 0
 	while true; do
 		/usr/bin/ssh $*
 		RESULT="$?"
-		[ "$RESULT" = "0" ] && break || echo "Error, ssh exit status code: $RESULT"
+		[ "$RESULT" = "0" ] && break || echo -n "ssh error: $RESULT... "
 		/bin/sleep 2
 	done
 }
