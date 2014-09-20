@@ -1,0 +1,56 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+install_pkg (){
+	/server/bin/pkgstatic info $1 > /dev/null 2> /dev/null || /server/bin/pkgstatic install -y $1
+}
+
+for i in git py27-pip py27-fabric py27-Jinja2 ; do
+	install_pkg $i
+done
+
+if [ ! -e /usr/local/bin/python ]; then
+	ln -shf python2.7 /usr/local/bin/python || exit 1
+fi
+
+if [ ! -e $HOME/littlechef/fix ]; then
+	git clone https://github.com/johnko-chef/littlechef-freebsd.git $HOME/littlechef || exit 1
+fi
+mkdir $HOME/new_kitchen
+cd $HOME/new_kitchen
+$HOME/littlechef/fix new_kitchen || exit 1
+
+cat > $HOME/new_kitchen/littlechef.cfg <<EOF
+[userinfo]
+user = littlechef
+keypair-file = ~/.ssh/id_rsa
+encrypted_data_bag_secret = 
+[kitchen]
+node_work_path = /tmp/chef-solo/
+EOF
+
+# littlechef/fabric/paramiko can't use ecdsa keys
+if [ ! -e ~/.ssh/id_rsa ]; then
+	ssh-keygen -N '' -t rsa -b 4096 -f ~/.ssh/id_rsa
+fi
+
+cat <<EOF
+To prepare node 10.123.234.250:
+# pkg install -y rubygem-chef
+# echo "littlechef:::::::/usr/home/littlechef:/bin/sh:" | /usr/sbin/adduser -w no -S -f -
+# passwd littlechef
+# visudo
+# chmod 755 /usr/home
+# install -d -o littlechef -g littlechef -m 700 /usr/home/littlechef/.ssh
+# install -o littlechef -g littlechef -m 600 ~/.ssh/authorized_keys /usr/home/littlechef/.ssh/authorized_keys
+
+You may want to:
+# set path = (\$HOME/littlechef \$path)
+# cd \$HOME/new_kitchen
+# rm -r cookbooks
+# git clone --recursive https://github.com/johnko-chef/cookbooks
+# rm -r roles
+# git clone https://github.com/johnko-chef/roles
+# echo '{"run_list":["role[base]"]}' > nodes/10.123.234.250.json
+# fix node:10.123.234.250
+EOF

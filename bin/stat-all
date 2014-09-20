@@ -1,51 +1,155 @@
 #!/bin/bash
+# Copyright (c) 2014 John Ko
 
-echo "DATE `date-dr`"
-echo "HOST `hostname`"
-echo "UPT  `stat-up`"
-echo "CPU  `stat-cpu`"
-echo "RAM  `stat-ram`"
-echo "HDD  `stat-disk`"
-echo "USR  `stat-usr`"
-echo "WHO  `stat-who`"
+case `uname -s` in
+	Darwin)
+		BINPATH=~/bin
+	;;
+	FreeBSD)
+		BINPATH=/server/bin
+	;;
+esac
 
-count=0
-ZFSLIST=`zpool status | egrep -o "pool\: ([[:alnum:]]*)" | awk '{ print $NF }'`
-for a in ${ZFSLIST} ; do
-  count=$(( count + 1 ))
-  if [ $count -eq 1 ]; then
-    echo -n "ZFS  "
-  else
-    echo -n "     "
-  fi
-  echo "`stat-zfs $a`"
-done
-
-if which sshd-finger >/dev/null 2>&1; then
-  echo "SSH  `sshd-finger`"
+line="DATE `${BINPATH}/date-dr`"
+echo -n "$line"
+if [ ${#line} -lt 40 ]; then
+	tab=""
+	for i in `/usr/bin/seq ${#line} 40`; do
+		tab="$tab "
+	done
 fi
+echo -n "$tab"
+echo "HOST `/bin/hostname -f`"
+
+${BINPATH}/stat-gpg
+
+case `uname -s` in
+	Darwin)
+		uname -r -s
+	;;
+	FreeBSD)
+		uname -i -p -r -s
+	;;
+esac
+
+echo "SSHR `${BINPATH}/ssh-finger-rsa`"
+case `uname -s` in
+	FreeBSD)
+		echo "SSHE `${BINPATH}/ssh-finger-ecdsa`"
+	;;
+esac
+
+line="CPU  `${BINPATH}/stat-cpu`"
+echo -n "$line"
+if [ ${#line} -lt 40 ]; then
+	tab=""
+	for i in `/usr/bin/seq ${#line} 40`; do
+		tab="$tab "
+	done
+fi
+echo -n "$tab"
+echo "UPT  `${BINPATH}/stat-up`"
+
+line="RAM  `${BINPATH}/stat-ram`"
+echo -n "$line"
+if [ ${#line} -lt 40 ]; then
+	tab=""
+	for i in `/usr/bin/seq ${#line} 40`; do
+		tab="$tab "
+	done
+fi
+echo -n "$tab"
+echo "USR  `${BINPATH}/stat-usr`"
+
+line="HDD  `${BINPATH}/stat-disk`"
+echo -n "$line"
+if [ ${#line} -lt 40 ]; then
+	tab=""
+	for i in `/usr/bin/seq ${#line} 40`; do
+		tab="$tab "
+	done
+fi
+echo -n "$tab"
+echo "WHO  `${BINPATH}/stat-who`"
+
 count=0
-NICLIST=`ifconfig -l`
-for a in ${NICLIST} ; do
-  if [ "$a" != "lo0" -a "$a" != "stf0" -a "$a" != "gif0" -a "$a" != "pflog0" -a "$a" != "fwe0" -a "$a" != "fwip0" -a "$a" != "ipfw0" ]; then
-    count=$(( count + 1 ))
-    if [ $count -eq 1 ]; then
-      echo -n "NET  "
-    else
-      echo -n "     "
-    fi
-    echo "$a   `net-mac $a`   `net-ip $a`"
-  fi
+${BINPATH}/stat-swap | while read line; do
+	count=$(( count + 1 ))
+	if [ $count -eq 1 ]; then
+		echo -n "SWAP "
+	else
+		echo -n "     "
+	fi
+	echo "$line"
 done
 
 count=0
-net-connections | while read line; do
-  count=$(( count + 1 ))
-  if [ $count -eq 1 ]; then
-    echo -n "CON  "
-  else
-    echo -n "     "
-  fi
-  echo "$line"
+${BINPATH}/stat-zfs | while read line; do
+	count=$(( count + 1 ))
+	if [ $count -eq 1 ]; then
+		echo -n "ZFS  "
+	else
+		echo -n "     "
+	fi
+	echo "$line"
 done
 
+count=0
+${BINPATH}/stat-ucarp | while read line; do
+	count=$(( count + 1 ))
+	if [ $count -eq 1 ]; then
+		echo -n "CARP "
+	else
+		echo -n "     "
+	fi
+	echo "$line"
+done
+
+count=0
+${BINPATH}/stat-net | while read line; do
+	count=$(( count + 1 ))
+	if [ $count -eq 1 ]; then
+		echo -n "NET  "
+	else
+		echo -n "     "
+	fi
+	echo "$line"
+done
+
+
+case `uname -s` in
+	FreeBSD)
+		count=0
+		${BINPATH}/stat-dhcpd | while read line; do
+			count=$(( count + 1 ))
+			if [ $count -eq 1 ]; then
+				echo -n "DHCP "
+			else
+				echo -n "     "
+			fi
+			echo "$line"
+		done
+
+		count=0
+		${BINPATH}/stat-jail | while read line; do
+			count=$(( count + 1 ))
+			if [ $count -eq 1 ]; then
+				echo -n "JAIL "
+			else
+				echo -n "     "
+			fi
+			echo "$line"
+		done
+	;;
+esac
+
+count=0
+${BINPATH}/net-connections -a | while read line; do
+	count=$(( count + 1 ))
+	if [ $count -eq 1 ]; then
+		echo -n "CON  "
+	else
+		echo -n "     "
+	fi
+	echo "$line"
+done

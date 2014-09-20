@@ -1,4 +1,5 @@
 #!/bin/sh
+# Copyright (c) 2014 John Ko
 
 if which date >/dev/null 2>&1 ; then
   datecmd=$( which date )
@@ -7,5 +8,5 @@ else
   exit 1
 fi
 
-$datecmd '+%Y%m%dT%H%M%S%z'
+$datecmd '+%Y%m%dT%H%M%S%Z'
 

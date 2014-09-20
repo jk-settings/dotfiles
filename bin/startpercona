@@ -1,0 +1,32 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+RESTOREMASK=`umask`
+umask 022
+
+/usr/sbin/sysrc -f /etc/rc.conf.local mysql_enable="YES"
+/usr/sbin/sysrc -f /etc/rc.conf.local mysql_limits="YES"
+/usr/sbin/sysrc -f /etc/rc.conf.local mysql_dbdir="/server/mysql/data"
+
+if [ ! -f "/usr/local/etc/rc.d/mysql-server" ]; then
+	/server/bin/pkgstatic install -y perl5 percona56-server
+fi
+
+/server/bin/configmysql 1 percona
+
+if [ -x "/usr/local/etc/rc.d/mysql-server" ]; then
+	/usr/local/etc/rc.d/mysql-server onerestart || /usr/local/etc/rc.d/mysql-server onestart
+fi
+
+if [ -x /server/bin/cron-percona-watchdog ]; then
+	if ! /usr/bin/egrep 'cron-percona-watchdog$' /etc/crontab > /dev/null 2>&1 ; then
+		/bin/cat >> /etc/crontab <<EOF
+# Added by /etc/rc.d/jcron
+*      *       *       *       *       root    /server/bin/cron-percona-watchdog
+EOF
+	fi
+fi
+
+umask $RESTOREMASK
+
+/server/bin/configmysql 2 percona

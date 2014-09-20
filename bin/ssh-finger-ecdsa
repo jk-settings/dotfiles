@@ -1,0 +1,15 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+case `uname -s` in
+	"Darwin")
+		exit 1
+		;;
+	"FreeBSD")
+		if [ -e /etc/ssh/ssh_host_ecdsa_key.pub ]; then
+			/usr/bin/ssh-keygen -lf /etc/ssh/ssh_host_ecdsa_key.pub | \
+				/usr/bin/awk '$2{ print $2 }'
+		fi
+		;;
+esac
+

@@ -1,0 +1,15 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+if [ "$( id -u )" != "0" ]; then
+  echo "ERROR: Must be root!"
+  exit 1
+fi
+
+dmesg | \
+  egrep "^pcm" | \
+  awk '{ print $1 }' | \
+  sort -u | \
+  sed 's/://g' | \
+  tr '\n' ' '
+

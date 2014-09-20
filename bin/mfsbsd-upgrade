@@ -1,0 +1,149 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+# mfsBSD upgrade script
+#
+RESTOREMASK=`umask`
+: ${server:="10.7.7.4"}
+: ${port:="80"}
+: ${RELEASE:="10.0-RELEASE"}
+: ${ARCH:="amd64"}
+
+usage() {
+	echo "Usage: $0 [-h] -t|-T dist_url [-m mount_point] [-p zfs_pool_name] [-f zfs_fs_name]"
+}
+
+MFSBSD=1
+
+help() {
+	echo; echo "Upgrade FreeBSD's mfsroot.gz by fetching a compressed archive"
+	echo; echo "Required flags:"
+	echo "-T dist_url       : URL to fetch of a .tar built by mfsbsd"
+	echo; echo "Optional flags:"
+	echo "-p pool_name      : specify a name for the ZFS pool (default: tank)"
+	echo "-f fs_name        : specify a name for the ZFS filesystem (default: rfs)"
+	echo "-m mount_point    : use this mount point for operations (default: /mnt)"
+	echo; echo "Examples:"
+	echo "Upgrade the autoboot:"
+	echo "$0 -t /path/to/release.tar -m /bootdir -p autoboot -f bootdir"
+	echo; echo "Remote fetch:"
+	echo "$0 -T http://${server}/mfsbsd/${RELEASE}-${ARCH}/NOX-${RELEASE}-${ARCH}.tar"
+}
+
+if [ $# -gt 0 ]; then
+
+	while getopts t:T:p:f:m:h o; do
+		case "$o" in
+			t) ARCHIVE="${OPTARG}" ;;
+			T) FETCH="${OPTARG}"; ARCHIVE="$FETCH" ;;
+			p) POOL="${OPTARG}" ;;
+			f) RFS="${OPTARG}" ;;
+			m) MNT="${OPTARG}" ;;
+			h) help; exit 1 ;;
+			[?]) usage; exit 1 ;;
+		esac
+	done
+
+fi
+
+if [ -z "$FETCH" ]; then
+
+	FETCH="http://${server}:${port}/mfsbsd/${RELEASE}-${ARCH}/NOX-${RELEASE}-${ARCH}.tar"
+	ARCHIVE="$FETCH"
+
+fi
+
+if [ -z "$ARCHIVE" ]; then
+	usage ; exit 1
+fi
+
+test -z "$POOL" && POOL=autoboot
+
+test -z "$RFS" && RFS=bootdir
+
+test -z "$MNT" && MNT=/bootdir
+
+if ! /sbin/zpool list "$POOL" > /dev/null 2> /dev/null ; then
+	echo "Error: ZFS pool $POOL doesn't exists" ; exit 1
+fi
+
+if ! /sbin/zfs list -o mounted,mountpoint "$POOL/$RFS" | /usr/bin/grep "$MNT" | /usr/bin/grep "yes" > /dev/null 2> /dev/null ; then
+	echo "Error: ZFS FS $POOL/$RFS not mounted" ; exit 1
+fi
+
+if [ -z "${URL}" ]; then
+
+	if [ -n "${FETCH}" ]; then
+
+		echo "Fetching ... ${FETCH}"
+
+		if ! /usr/bin/fetch -o "/tmp/${FETCH##*/}" "${FETCH}" ; then
+			echo "Error fetching ${FETCH}" ; exit 1
+		fi
+
+		ARCHIVE="/tmp/${FETCH##*/}"
+
+		ARCHSIZE=$( /bin/ls -l "${ARCHIVE}" | /usr/bin/awk '{print $5}' )
+
+		if [ $ARCHSIZE -lt 10000000 ]; then
+			echo "Archive too small, fetch probably failed." ; exit 1
+		fi
+
+	fi
+
+	if [ ! -f "${ARCHIVE}" ]; then
+		echo "Error: file $ARCHIVE does not exist" ; exit 1
+	fi
+
+	EXTRACT_FILES="${ARCHIVE}"
+
+fi
+
+if [ ! -d "${MNT}" ]; then
+	echo "Error: $MNT is not a directory" ; exit 1
+fi
+
+TIMESTAMP=$( /bin/date '+%Y%m%dT%H%M%S%Z' )
+
+echo -n "Snapshotting autoboot/bootdir@upgrade-${TIMESTAMP} ..."
+
+if ! /sbin/zfs snapshot "autoboot/bootdir@upgrade-${TIMESTAMP}" > /dev/null 2> /dev/null ; then
+	echo " error" ; exit 1
+fi
+
+echo " done"
+
+echo -n "Extracting FreeBSD distribution ..."
+
+for file in ${EXTRACT_FILES}; do
+
+	if [ "$MFSBSD" != "1" ]; then
+		echo "Not mfsbsd, aborting" ; exit 1
+	fi
+
+	if ! /usr/bin/tar -C /bootdir --exclude="${RELEASE}-${ARCH}" --exclude=loader.conf.local -x -f "${file}" > /dev/null 2> /dev/null ; then
+		echo " error" ; exit 1
+	fi
+
+	if ! /usr/bin/tar -C /var/backups --include="${RELEASE}-${ARCH}" -x -f "${file}" > /dev/null 2> /dev/null ; then
+		echo " error" ; exit 1
+	fi
+
+	/bin/mv "${file}" /var/backups/
+
+done
+
+echo " done"
+
+# Adjust configuration files
+
+/bin/cat <<EOF
+
+Upgrade complete.
+
+! ! ! ! ! ! ! ! ! !
+! REBOOT REQUIRED !
+! ! ! ! ! ! ! ! ! !
+
+EOF
+
+test -x /server/bin/zfscustom && MFSBSD="${MFSBSD}" UPGRADE=1 /server/bin/zfscustom

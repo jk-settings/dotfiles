@@ -1,0 +1,7 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+pgrep -lf xscreensaver >/dev/null 2>&1 || xscreensaver -nosplash &
+sleep 1
+pgrep -lf xscreensaver >/dev/null 2>&1 && xscreensaver-command -lock || exit 1
+

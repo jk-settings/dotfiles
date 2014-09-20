@@ -1,0 +1,10 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+if /sbin/zfs list data/distro/releng10 > /dev/null 2> /dev/null ; then
+	if /sbin/mount | /usr/bin/grep 'data/distro/releng10' > /dev/null 2> /dev/null ; then
+		update="update"
+	fi
+fi
+
+/server/bin/freebsd-src svn ${update} && /server/bin/jrolejails release

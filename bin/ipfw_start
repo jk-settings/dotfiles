@@ -1,0 +1,7 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+ipfw list
+
+echo "See /sbin/ipfw_script"
+

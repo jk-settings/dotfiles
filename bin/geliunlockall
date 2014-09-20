@@ -1,0 +1,20 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+/sbin/geli load > /dev/null 2> /dev/null
+
+if [ -d /bootdir/boot/keys ]; then
+	for a in `/usr/bin/find /bootdir/boot/keys -type f -maxdepth 1`; do
+		if [ -e "/dev/label/${a##*.}" -a -e "${a}" -a ! -e "/dev/label/${a##*.}.eli" ]; then
+			/sbin/geli attach -p -k ${a} /dev/label/${a##*.}
+		fi
+	done
+fi
+
+if [ -d /bootdir/boot/keys/bootpkg ]; then
+	for a in `/usr/bin/find /bootdir/boot/keys/bootpkg -type f -maxdepth 1`; do
+		if [ -e "/dev/label/${a##*.}" -a -e "${a}" -a ! -e "/dev/label/${a##*.}.eli" ]; then
+			/sbin/geli attach -p -k ${a} /dev/label/${a##*.}
+		fi
+	done
+fi

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+ipfw -q flush
+
+ipfw add deny in
+ipfw add deny out
+

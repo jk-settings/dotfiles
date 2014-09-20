@@ -1,21 +1,33 @@
 #!/bin/sh
+# Copyright (c) 2014 John Ko
 
 case `uname -s` in
-  "Darwin")
-    df -H / | \
-      egrep '/' | \
-      awk '{ print $2,$3,$4 }'
-    ;;
-  "FreeBSD")
-    zpool get size,allocated,free \
-      $( \
-        df -H / | \
-        egrep '/' | \
-        awk -F'/' '{print $1}' \
-      ) | \
-      tail -3 | \
-      awk '{ printf "%s ", $3 }' | \
-      awk '{ print $0 }'
-    ;;
+	"Darwin")
+		df -H / | \
+			/usr/bin/grep '/' | \
+			/usr/bin/awk '{ print $2,$3,$4 }'
+	;;
+	"FreeBSD")
+		if ! /sbin/mount | /usr/bin/grep ' / ' | /usr/bin/grep '/md'  >/dev/null 2>&1 ; then
+			ZPOOLSTAT=$( /sbin/zpool get size,allocated,free \
+				$( \
+					/bin/df -H / | \
+						/usr/bin/grep '/' | \
+						/usr/bin/grep -v tmpfs | \
+						/usr/bin/awk -F'/' '{print $1}' \
+				) | \
+				/usr/bin/grep -v 'NAME.*PROPERTY.*VALUE' | \
+					/usr/bin/awk '{ printf "%s ", $3 }' | \
+					/usr/bin/sed 's# $##'
+			)
+		fi
+		if [ "x" = "x${ZPOOLSTAT}" ]; then
+			/bin/df -H / | \
+				/usr/bin/grep '/' | \
+				/usr/bin/awk '{ print $2,$3,$4 }'
+		else
+			echo "$ZPOOLSTAT"
+		fi
+	;;
 esac
 

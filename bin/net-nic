@@ -1,7 +1,18 @@
 #!/bin/sh
+# Copyright (c) 2014 John Ko
 
-netstat -rn | \
-  egrep "default" | \
-  head -1 | \
-  awk '{ print $NF }'
+# use netstat because in jail, route fails
 
+case `uname -s` in
+	Darwin)
+		BINPATH=/usr/sbin
+	;;
+	FreeBSD)
+		BINPATH=/usr/bin
+	;;
+esac
+
+${BINPATH}/netstat -nr \
+| /usr/bin/egrep default \
+| /usr/bin/awk '{ print $6 }' \
+| /usr/bin/head -1

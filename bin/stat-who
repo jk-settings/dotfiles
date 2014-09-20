@@ -1,10 +1,14 @@
 #!/bin/sh
+# Copyright (c) 2014 John Ko
 
-who -q | \
-  tail -r | \
-  tail +2 | \
-  tr ' ' '\n' | \
-  sort -u | \
-  tr '\n' ' ' | \
-  sed 's/^ *//g'
+ommitcomments () {
+	/usr/bin/egrep -v '^\s*#'
+}
+
+/usr/bin/who -q | \
+  ommitcomments | \
+  /usr/bin/tr ' ' '\n' | \
+  /usr/bin/sort -u | \
+  /usr/bin/tr '\n' ' ' | \
+  /usr/bin/sed 's/^ *//g'
 

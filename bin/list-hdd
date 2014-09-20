@@ -1,0 +1,7 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+/bin/ls -1 /dev/ | \
+  /usr/bin/egrep ".{0,1}da[0-9]" | \
+  /usr/bin/egrep -v "[0-9]p[0-9]"
+

@@ -1,4 +1,5 @@
 #!/bin/sh
+# Copyright (c) 2014 John Ko
 
 if which date >/dev/null 2>&1 ; then
   datecmd=$( which date )
@@ -11,5 +12,5 @@ if [ -z "${1}" ]; then
   exit 1
 fi
 
-$datecmd -j -f '%Y%m%dT%H%M%S%z' "$1" '+%Y-%m-%d %H:%M:%S %Z%z'
+$datecmd -j -f '%Y%m%dT%H%M%S%Z' "$1" '+%Y-%m-%d %H:%M:%S %Z%z'
 

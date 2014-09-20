@@ -1,0 +1,10 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+if /sbin/ifconfig -l | /usr/bin/grep lagg0 >/dev/null 2>/dev/null ; then
+	INTERFACE="-i lagg0"
+else
+	INTERFACE="-i $( /server/bin/net-nic )"
+fi
+
+/usr/local/bin/iftop -Bn ${INTERFACE} $*

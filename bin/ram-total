@@ -1,17 +1,26 @@
-#!/bin/sh
+#!/bin/bash
+# Copyright (c) 2014 John Ko
 
 case `uname -s` in
-  "Darwin")
-    echo $( \
-      system_profiler SPHardwareDataType | \
-      egrep 'Memory' | \
-      awk '{ print $2$3 }' \
-    ) | \
-      sed 's/GB//'
-    ;;
-  "FreeBSD")
-    echo $( sysctl -n vm.stats.vm.v_page_count )" "$( ram-pagesize ) | \
-      awk '{ printf "%.1f\n", $1 * $2 / 1073741824 }'
-    ;;
+	Darwin)
+		BINPATH=/usr/sbin
+	;;
+	FreeBSD)
+		BINPATH=/sbin
+	;;
+esac
+
+ram-pagesize () {
+	${BINPATH}/sysctl -n hw.pagesize
+}
+
+case `uname -s` in
+	Darwin)
+		${BINPATH}/sysctl -n hw.memsize | /usr/bin/awk '{ printf "%.1f\n", $1 / 1073741824 }'
+	;;
+	FreeBSD)
+		echo $( ${BINPATH}/sysctl -n vm.stats.vm.v_page_count )" "$( ram-pagesize ) | \
+			/usr/bin/awk '{ printf "%.1f\n", $1 * $2 / 1073741824 }'
+	;;
 esac
 

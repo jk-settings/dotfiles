@@ -1,0 +1,9 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+xset s off
+xset s noblank
+xset s noexpose
+xset c on
+xset -dpms
+

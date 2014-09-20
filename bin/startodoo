@@ -1,0 +1,98 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+# Packages listed from http://www.schenkels.nl/2014/07/install-odoo-v8-0-from-github-ubuntu-14-04-lts-formerly-openerp/
+PYPACKAGES="
+git
+python
+py27-dateutil
+py27-feedparser
+py27-ldap2
+py27-libxslt
+py27-lxml
+py27-mako
+py27-openid
+py27-psycopg2
+py27-Babel
+py27-chart
+py27-pydot
+py27-parsing
+py27-reportlab
+py27-simplejson
+py27-pytz
+py27-vatnumber
+py27-vobject
+py27-PyWebDAV
+py27-werkzeug
+py27-xlwt
+py27-yaml
+py27-zsi
+py27-docutils
+py27-psutil
+py27-mock
+py27-unittest2
+py27-Jinja2
+py27-pdf
+py27-decorator
+py27-requests
+py27-gdata
+"
+
+for i in $PYPACKAGES ; do
+	/usr/local/sbin/pkg-static install -y $i
+done
+
+/server/bin/adduser-nopass odoo
+
+sudo -u odoo -i -- git clone https://www.github.com/odoo/odoo --branch 8.0 /usr/home/odoo/odoo
+
+/usr/bin/install -d -m 0700 -o odoo -g wheel /var/log/odoo
+/bin/cat > /etc/odoo-server.conf <<EOF
+[options]
+; This is the password that allows database operations:
+admin_passwd = $1
+db_host = 10.7.7.10
+db_port = False
+db_user = odoo
+db_password = $1
+addons_path = /usr/home/odoo/odoo/addons
+logfile = /var/log/odoo/odoo-server.log
+syslog = False
+logrotate = True
+log_handler = [':INFO']
+log_level = info
+smtp_server = False
+EOF
+/usr/sbin/chown odoo:odoo /etc/odoo-server.conf
+/bin/chmod 640 /etc/odoo-server.conf
+
+/bin/cat > /etc/rc.d/odoo <<EOF
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+# ODOO CUSTOM
+# PROVIDE: odoo
+# REQUIRE: FILESYSTEMS LOGIN NETWORKING
+. /etc/rc.subr
+name="odoo"
+start_cmd="odoo_start"
+stop_cmd="odoo_stop"
+odoo_start()
+{
+	/usr/local/bin/sudo -u odoo -i -- /usr/local/bin/python /usr/home/odoo/odoo/openerp-server --config=/etc/odoo-server.conf &
+}
+odoo_stop()
+{
+	local LOOP=1
+	while [ $LOOP -eq 1 ]; do
+		if /bin/pgrep -lf odoo-server > /dev/null 2> /dev/null ; then
+			/bin/pkill -lf odoo-server > /dev/null 2> /dev/null
+		else
+			local LOOP=0
+		fi
+		sleep 5
+	done
+}
+load_rc_config \$name
+run_rc_command "\$1"
+EOF
+/bin/chmod 755 /etc/rc.d/odoo
