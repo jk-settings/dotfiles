@@ -1,0 +1,9 @@
+#!/bin/sh
+# Copyright (c) 2014 John Ko
+
+case `uname -s` in
+	Darwin)
+		/usr/sbin/sysctl -w zfs.arc_max=256000000
+	;;
+esac
+
