@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright (c) 2014 John Ko
+
+if [ "$( id -u )" != "0" ]; then
+	echo "Need to be root!"
+	exit 1
+fi
+
+PORTS="
+wget
+openvpn2
+tuntaposx
+flac
+ghostscript
+"
+
+port selfupdate
+port upgrade installed
+port install $PORTS
+
+launchctl load -w /Library/LaunchDaemons/org.macports.tuntaposx.plist
