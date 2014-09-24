@@ -12,6 +12,8 @@ openvpn2
 tuntaposx
 flac
 ghostscript
+bchunk
+gnupg2
 "
 
 port selfupdate
