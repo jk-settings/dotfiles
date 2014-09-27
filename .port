@@ -7,6 +7,15 @@ if [ "$( id -u )" != "0" ]; then
 fi
 
 PORTS="
+BwanaDik
+macports-notifier
+ShiftIt
+terminal-notifier
+textmate2
+Pallet
+MenuMeters
+KeePassX
+keka
 wget
 openvpn2
 tuntaposx
@@ -14,6 +23,7 @@ flac
 ghostscript
 bchunk
 gnupg2
+Growl
 VLC
 ffmpeg
 mplayer2
@@ -22,6 +32,9 @@ gimp-app
 inkscape-app
 HandBrake
 scribus
+fugu
+FileZilla
+adium
 "
 
 port selfupdate
