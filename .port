@@ -6,8 +6,11 @@ if [ "$( id -u )" != "0" ]; then
 	exit 1
 fi
 
-PORTS="
+FAILED="
 BwanaDik
+"
+
+PORTS="
 macports-notifier
 ShiftIt
 terminal-notifier
