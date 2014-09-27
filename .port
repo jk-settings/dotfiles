@@ -40,6 +40,7 @@ inkscape-app
 scribus
 fugu
 FileZilla
+xorg-server
 "
 
 port selfupdate
