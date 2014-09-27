@@ -11,6 +11,9 @@ BwanaDik
 ShiftIt
 Growl
 HandBrake
+Pallet
+gimp-app
+adium
 "
 
 ln -s /usr/bin/llvm-gcc /Users/chill/Applications/Xcode.app/Contents/Developer/usr/bin/llvm-gcc-4.2
@@ -33,12 +36,10 @@ VLC
 ffmpeg
 mplayer2
 transmission
-gimp-app
 inkscape-app
 scribus
 fugu
 FileZilla
-adium
 "
 
 port selfupdate
