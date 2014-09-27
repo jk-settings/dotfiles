@@ -16,7 +16,7 @@ gimp-app
 adium
 "
 
-ln -s /usr/bin/llvm-gcc /Users/chill/Applications/Xcode.app/Contents/Developer/usr/bin/llvm-gcc-4.2
+ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
 
 PORTS="
 macports-notifier
