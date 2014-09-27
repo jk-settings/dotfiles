@@ -14,6 +14,7 @@ HandBrake
 Pallet
 gimp-app
 adium
+inkscape-app
 "
 
 ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
@@ -36,7 +37,7 @@ VLC
 ffmpeg
 mplayer2
 transmission
-inkscape-app
+inkscape
 scribus
 fugu
 FileZilla
