@@ -14,7 +14,14 @@ flac
 ghostscript
 bchunk
 gnupg2
-synergy
+VLC
+ffmpeg
+mplayer2
+transmission
+gimp-app
+inkscape-app
+HandBrake
+scribus
 "
 
 port selfupdate
