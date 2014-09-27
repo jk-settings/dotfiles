@@ -6,16 +6,19 @@ if [ "$( id -u )" != "0" ]; then
 	exit 1
 fi
 
-FAILED="
+FAILED_OSX_10_9="
 BwanaDik
+ShiftIt
+Growl
+HandBrake
 "
+
+ln -s /usr/bin/llvm-gcc /Users/chill/Applications/Xcode.app/Contents/Developer/usr/bin/llvm-gcc-4.2
 
 PORTS="
 macports-notifier
-ShiftIt
 terminal-notifier
 textmate2
-Pallet
 MenuMeters
 KeePassX
 keka
@@ -26,14 +29,12 @@ flac
 ghostscript
 bchunk
 gnupg2
-Growl
 VLC
 ffmpeg
 mplayer2
 transmission
 gimp-app
 inkscape-app
-HandBrake
 scribus
 fugu
 FileZilla
