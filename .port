@@ -15,6 +15,8 @@ Pallet
 gimp-app
 adium
 inkscape-app
+VLC
+FileZilla
 "
 
 ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
@@ -33,14 +35,12 @@ flac
 ghostscript
 bchunk
 gnupg2
-VLC
 ffmpeg
 mplayer2
 transmission
 inkscape
 scribus
 fugu
-FileZilla
 xorg-server
 "
 
