@@ -29,7 +29,7 @@ fi
 FIRSTSNAP="${1}"
 
 case `uname` in
-	FreeBSD)
+	FreeBSD|Darwin)
 		FIRSTSENDOPT="send -pvR"
 		FIRSTRECVOPT="recv -vudF"
 		RECVPOOL="${3}"
