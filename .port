@@ -44,6 +44,7 @@ fugu
 xorg-server
 unison
 go
+mercurial
 "
 
 port selfupdate
