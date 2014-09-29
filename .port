@@ -43,6 +43,7 @@ scribus
 fugu
 xorg-server
 unison
+go
 "
 
 port selfupdate
