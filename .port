@@ -42,6 +42,7 @@ inkscape
 scribus
 fugu
 xorg-server
+unison
 "
 
 port selfupdate
