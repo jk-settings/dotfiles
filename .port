@@ -24,6 +24,7 @@ ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
 PORTS="
 macports-notifier
 terminal-notifier
+iftop
 textmate2
 MenuMeters
 KeePassX
