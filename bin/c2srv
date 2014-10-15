@@ -1,5 +1,7 @@
 #!/bin/sh
 # Cron run csync2 server if not already running
+DATABASE="-D /Users/chill/csync2/db"
+MYNAME="-N chill"
 
 # EDIT THE LOG FILE
 
@@ -9,5 +11,5 @@ if [ "x" != "x${LOCAL}" ]; then
 #	echo "${LOCAL}"
 	exit 0
 else
-	csync2 -ii -v >>~/csync2/csync2server.log 2>&1 &
+	csync2 ${DATABASE} ${MYNAME} -ii -v >>~/csync2/csync2server.log 2>&1 &
 fi
