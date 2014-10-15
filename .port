@@ -6,6 +6,8 @@ if [ "$( id -u )" != "0" ]; then
 	exit 1
 fi
 
+mkdir /Users/chill/Applications/MacPorts
+
 FAILED_OSX_10_9="
 BwanaDik
 ShiftIt
