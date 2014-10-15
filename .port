@@ -18,6 +18,7 @@ inkscape-app
 VLC
 FileZilla
 mplayer2
+textmate2
 "
 
 ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
@@ -31,7 +32,6 @@ pkgconfig
 macports-notifier
 terminal-notifier
 iftop
-textmate2
 MenuMeters
 KeePassX
 keka
