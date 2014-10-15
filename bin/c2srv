@@ -1,0 +1,13 @@
+#!/bin/sh
+# Cron run csync2 server if not already running
+
+# EDIT THE LOG FILE
+
+LOCAL=$( netstat -an -f inet | grep '\.30865.* LISTEN' )
+if [ "x" != "x${LOCAL}" ]; then
+#	echo "INFO: csync2 server already listening from local"
+#	echo "${LOCAL}"
+	exit 0
+else
+	csync2 -ii -v >>~/csync2/csync2server.log 2>&1 &
+fi

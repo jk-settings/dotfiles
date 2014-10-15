@@ -1,0 +1,20 @@
+#!/bin/sh
+# Cron run csync2 client only if not already running
+DATABASE="-D /Users/chill/csync2/db"
+MYNAME="-N chill"
+
+# EDIT THE LOG FILE
+
+REMOTE=$( netstat -an -f inet | grep '\.30865.* ESTABLISHED' | awk '{print $4}' | grep 30865 )
+LOCAL=$( pgrep -lf csync2 | grep -v '\-ii' )
+if [ "x" != "x${REMOTE}" ]; then
+	echo "ERROR: csync2 client already connected from remote"
+	echo "${REMOTE}"
+	exit 1
+elif [ "x" != "x${LOCAL}" ]; then
+	echo "ERROR: csync2 client already running from local"
+	echo "${LOCAL}"
+	exit 1
+else
+	csync2 ${DATABASE} ${MYNAME} -xv >>~/csync2/csync2client.log 2>&1 &
+fi
