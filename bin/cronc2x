@@ -20,5 +20,5 @@ elif [ "x" != "x${LOCAL}" ]; then
 	echo "${LOCAL}"
 	exit 1
 else
-	csync2 ${DATABASE} ${MYNAME} -x -v "$@" >>~/csync2/csync2client.log 2>&1 &
+	csync2 ${DATABASE} ${MYNAME} -x -v "$@" >>~/csync2/cron.log 2>&1 &
 fi

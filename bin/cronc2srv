@@ -15,5 +15,5 @@ if [ "x" != "x${LOCAL}" ]; then
 #	echo "${LOCAL}"
 	exit 0
 else
-	csync2 ${DATABASE} ${MYNAME} -ii -v >>~/csync2/csync2server.log 2>&1 &
+	csync2 ${DATABASE} ${MYNAME} -ii -v >>~/csync2/server.log 2>&1 &
 fi
