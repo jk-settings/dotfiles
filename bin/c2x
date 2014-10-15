@@ -16,5 +16,5 @@ elif [ "x" != "x${LOCAL}" ]; then
 	echo "${LOCAL}"
 	exit 1
 else
-	csync2 ${DATABASE} ${MYNAME} -v "$@" || exit $?
+	csync2 ${DATABASE} ${MYNAME} -x -v "$@" || exit $?
 fi

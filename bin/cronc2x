@@ -5,6 +5,10 @@ MYNAME="-N chill"
 
 # EDIT THE LOG FILE
 
+if [ -e /etc/csync2.bootlock ]; then
+	echo "ERROR: $0 will not run if /etc/csync2.bootlock exists"
+	exit 1
+fi
 REMOTE=$( netstat -an -f inet | grep '\.30865.* ESTABLISHED' | awk '{print $4}' | grep 30865 )
 LOCAL=$( pgrep -lf csync2 | grep '\-x' )
 if [ "x" != "x${REMOTE}" ]; then
@@ -16,5 +20,5 @@ elif [ "x" != "x${LOCAL}" ]; then
 	echo "${LOCAL}"
 	exit 1
 else
-	csync2 ${DATABASE} ${MYNAME} -v "$@" || exit $?
+	csync2 ${DATABASE} ${MYNAME} -x -v "$@" >>~/csync2/csync2client.log 2>&1 &
 fi
