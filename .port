@@ -17,11 +17,17 @@ adium
 inkscape-app
 VLC
 FileZilla
+mplayer2
 "
 
 ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
 
 PORTS="
+librsync
+sqlite2
+libtasn1
+gnutls
+pkgconfig
 macports-notifier
 terminal-notifier
 iftop
@@ -37,7 +43,6 @@ ghostscript
 bchunk
 gnupg2
 ffmpeg
-mplayer2
 transmission
 inkscape
 scribus
