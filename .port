@@ -23,7 +23,7 @@ mplayer2
 textmate2
 "
 
-ln -s /Users/chill/Applications/MacPorts /Applications/MacPorts
+ln -sf /Users/chill/Applications/MacPorts /Applications/MacPorts
 
 PORTS="
 librsync
