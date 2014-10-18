@@ -26,6 +26,7 @@ textmate2
 ln -sf /Users/chill/Applications/MacPorts /Applications/
 
 PORTS="
+encfs
 librsync
 sqlite2
 libtasn1
