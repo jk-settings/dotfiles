@@ -8,6 +8,14 @@ fi
 
 mkdir /Users/chill/Applications/MacPorts
 
+DISABLED="
+encfs
+textmate2
+VLC
+FileZilla
+FreeRDP
+"
+
 FAILED_OSX_10_9="
 BwanaDik
 ShiftIt
@@ -17,21 +25,19 @@ Pallet
 gimp-app
 adium
 inkscape-app
-VLC
-FileZilla
 mplayer2
-textmate2
 "
 
 ln -sf /Users/chill/Applications/MacPorts /Applications/
 
 PORTS="
-encfs
 librsync
 sqlite2
 libtasn1
 gnutls
 pkgconfig
+openvpn2
+tuntaposx
 macports-notifier
 terminal-notifier
 iftop
@@ -39,8 +45,6 @@ MenuMeters
 KeePassX
 keka
 wget
-openvpn2
-tuntaposx
 flac
 ghostscript
 bchunk
