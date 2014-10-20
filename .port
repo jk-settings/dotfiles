@@ -28,8 +28,6 @@ inkscape-app
 mplayer2
 "
 
-ln -sf /Users/chill/Applications/MacPorts /Applications/
-
 PORTS="
 librsync
 sqlite2
