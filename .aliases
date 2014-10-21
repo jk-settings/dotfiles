@@ -22,6 +22,8 @@ alias ssh="/usr/bin/ssh -t"
 alias sshi="ssh -i ~/.ssh/id_rsa.oldmacair"
 alias sshm="ssh -i ~/.ssh/id_rsa.minair"
 alias nr="netstat -nr"
+alias a="open -a Atom.app"
+alias t="open -a Terminal.app"
 alias tw="open -a TextWrangler.app"
 
 # VPN Route
