@@ -1,20 +1,30 @@
 #!/bin/sh
 # Cron run csync2 client only if not already running
-DATABASE="-D /Users/chill/csync2/db"
-MYNAME="-N chill"
+LOGDIR=/Users/chill/csync2
+MUSTEXIST=/Volumes/zzz/sync
+PCNAME="-N chill"
 
-# EDIT THE LOG FILE
+if ! [ -e ${MUSTEXIST} ]; then
+	echo "ERROR: Folder does not exist: ${MUSTEXIST}" >&2
+	exit 1
+fi
 
+
+
+
+
+DATABASE="-D ${LOGDIR}/db"
 REMOTE=$( netstat -an -f inet | grep '\.30865.* ESTABLISHED' | awk '{print $4}' | grep 30865 )
 LOCAL=$( pgrep -lf csync2 | grep '\-x' )
+
 if [ "x" != "x${REMOTE}" ]; then
-	echo "ERROR: csync2 client already connected from remote"
-	echo "${REMOTE}"
+	echo "ERROR: csync2 client already connected from remote" >&2
+	echo "${REMOTE}" >&2
 	exit 1
 elif [ "x" != "x${LOCAL}" ]; then
-	echo "ERROR: csync2 client already running from local"
-	echo "${LOCAL}"
+	echo "ERROR: csync2 client already running from local" >&2
+	echo "${LOCAL}" >&2
 	exit 1
 else
-	csync2 ${DATABASE} ${MYNAME} -x -v "$@" || exit $?
+	csync2 ${DATABASE} ${PCNAME} -x -v "$@" || exit $?
 fi
