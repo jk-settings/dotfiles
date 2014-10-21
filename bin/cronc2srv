@@ -4,6 +4,12 @@ LOGDIR=/Users/chill/csync2
 MUSTEXIST=/Volumes/zzz/sync
 PCNAME="-N chill"
 
+netstat=/usr/sbin/netstat
+grep=/usr/bin/grep
+awk=/usr/bin/awk
+pgrep=/usr/bin/pgrep
+csync2=/opt/local/sbin/csync2
+
 if ! [ -e ${MUSTEXIST} ]; then
 	echo "ERROR: Folder does not exist: ${MUSTEXIST}" >&2
 	exit 1
@@ -15,12 +21,12 @@ fi
 
 DATABASE="-D ${LOGDIR}/db"
 
-LOCAL=$( netstat -an -f inet | grep '\.30865.* LISTEN' )
+LOCAL=$( $netstat -an -f inet | $grep '\.30865.* LISTEN' )
 
 if [ "x" != "x${LOCAL}" ]; then
 #	echo "INFO: csync2 server already listening from local"
 #	echo "${LOCAL}"
 	exit 0
 else
-	csync2 ${DATABASE} ${PCNAME} -ii -v >>${LOGDIR}/server.log 2>&1 &
+	$csync2 ${DATABASE} ${PCNAME} -ii -v >>${LOGDIR}/server.log 2>&1 &
 fi

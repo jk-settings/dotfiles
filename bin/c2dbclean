@@ -1,3 +1,4 @@
 #!/bin/sh
+csync2=/opt/local/sbin/csync2
 
-csync2 -R
+$csync2 -R

@@ -4,6 +4,12 @@ LOGDIR=/Users/chill/csync2
 MUSTEXIST=/Volumes/zzz/sync
 PCNAME="-N chill"
 
+netstat=/usr/sbin/netstat
+grep=/usr/bin/grep
+awk=/usr/bin/awk
+pgrep=/usr/bin/pgrep
+csync2=/opt/local/sbin/csync2
+
 if ! [ -e ${MUSTEXIST} ]; then
 	echo "ERROR: Folder does not exist: ${MUSTEXIST}" >&2
 	exit 1
@@ -14,8 +20,8 @@ if [ -e /etc/csync2.bootlock ]; then
 fi
 
 DATABASE="-D ${LOGDIR}/db"
-REMOTE=$( netstat -an -f inet | grep '\.30865.* ESTABLISHED' | awk '{print $4}' | grep 30865 )
-LOCAL=$( pgrep -lf csync2 | grep '\-x' )
+REMOTE=$( $netstat -an -f inet | $grep '\.30865.* ESTABLISHED' | $awk '{print $4}' | $grep 30865 )
+LOCAL=$( $pgrep -lf csync2 | $grep '\-x' )
 
 if [ "x" != "x${REMOTE}" ]; then
 	echo "ERROR: csync2 client already connected from remote" >&2
@@ -26,5 +32,5 @@ elif [ "x" != "x${LOCAL}" ]; then
 	echo "${LOCAL}" >&2
 	exit 1
 else
-	csync2 ${DATABASE} ${PCNAME} -x -v "$@" || echo $?
+	$csync2 ${DATABASE} ${PCNAME} -x -v "$@" || echo $?
 fi
