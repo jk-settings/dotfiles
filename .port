@@ -6,13 +6,6 @@ if [ "$( id -u )" != "0" ]; then
 	exit 1
 fi
 
-# TODO, if MacOSX10.10.sdk does not exist, attempt to fake it with a link to 10.9
-# some ports still compile
-xcode-select -s /Applications/Xcode.app/Contents/Developer
-if [ ! -e /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk ]; then
-  ln -s MacOSX10.9.sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk
-fi
-
 DONOTUSE="
 encfs
 textmate2
