@@ -27,6 +27,7 @@ mplayer2
 "
 
 PORTS="
+watch
 librsync
 sqlite2
 libtasn1
