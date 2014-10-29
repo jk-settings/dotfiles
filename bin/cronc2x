@@ -20,8 +20,8 @@ if [ -e /etc/csync2.bootlock ]; then
 fi
 
 DATABASE="-D ${LOGDIR}/db"
-REMOTE=$( $netstat -an -f inet | $grep '\.30865.* ESTABLISHED' | $awk '{print $4}' | $grep 30865 )
-LOCAL=$( $pgrep -lf csync2 | $grep '\-x' )
+REMOTE="$( $netstat -an -f inet | $grep '\.30865.* ESTABLISHED' | $awk '{print $4}' | $grep 30865 )"
+LOCAL="$( $pgrep -lf csync2 | $grep '\-x' )"
 
 if [ "x" != "x${REMOTE}" ]; then
 #	echo "ERROR: csync2 client already connected from remote" >&2
