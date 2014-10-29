@@ -1,8 +1,8 @@
 #!/bin/sh
 # Cron run csync2 server if not already running
-LOGDIR=/Users/chill/csync2
+LOGDIR=/Users/$(whoami)/csync2
 MUSTEXIST=/Volumes/zzz/sync
-PCNAME="-N chill"
+PCNAME="-N $(whoami)"
 
 netstat=/usr/sbin/netstat
 grep=/usr/bin/grep
