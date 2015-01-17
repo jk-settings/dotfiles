@@ -9,5 +9,5 @@ for i in ${HOSTS} ; do
   for k in `seq ${#i} 10` ; do
     printf ' ';
   done
-  ssh urep@$i 'cd gitsync && git log --oneline --decorate -1'
+  ssh urep@$i 'cd gitsync && git log --oneline --decorate -1 | sed "s/master//g;s:/,::g"'
 done
