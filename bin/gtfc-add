@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# gtfc add
+
+gitcluster_add() {
+  first=$1
+  second=$2
+  repo=$3
+  if [ "x" = "x$first" ]; then
+    echo "ERROR: missing arg" >&2
+    exit 1
+  elif [ "x" = "x$second" ]; then
+    echo "ERROR: missing arg" >&2
+    exit 1
+  elif [ "x" = "x$repo" ]; then
+    repo="gitsync"
+  fi
+  ssh -A urep@$second gtfc clone $first $repo
+  ssh urep@$first sh $repo/gitpullall.sh -f
+}
+
+gitcluster_add $1 $2 $3

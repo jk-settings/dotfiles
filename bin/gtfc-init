@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# gtfc init
+
+gitcluster_init() {
+  first=$1
+  repo=$2
+
+  if [ "x" = "x$first" ]; then
+    echo "ERROR: missing arg" >&2
+    exit 1
+
+
+
+  elif [ "x" = "x$repo" ]; then
+    repo="gitsync"
+  fi
+  ssh urep@$first gtfc init $first $repo
+
+}
+
+gitcluster_init $1 $2
