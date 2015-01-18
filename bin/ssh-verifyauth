@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Compares the authorized_keys and authorized_keys2
+
+HOSTS="ace bar mana storm"
+
+for i in ${HOSTS} ; do
+  ssh $i '[ -e .ssh/authorized_keys ] && cat .ssh/authorized_keys'
+done | sort | uniq -c
+
+for i in ${HOSTS} ; do
+  ssh $i '[ -e .ssh/authorized_keys2 ] && cat .ssh/authorized_keys2'
+done | sort | uniq -c
