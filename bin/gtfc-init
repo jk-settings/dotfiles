@@ -15,7 +15,7 @@ gitcluster_init() {
   elif [ "x" = "x$repo" ]; then
     repo="gitsync"
   fi
-  ssh urep@$first gtfc init $first $repo
+  ssh -t urep@$first gtfc init $first $repo
 
 }
 
