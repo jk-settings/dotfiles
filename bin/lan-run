@@ -1,0 +1,8 @@
+#!/bin/sh
+
+HOSTS="ace bar storm mana"
+
+for i in $HOSTS ; do
+  echo "########## ########## ########## $i ########## ########## ##########"
+  ssh -t $i $@
+done
